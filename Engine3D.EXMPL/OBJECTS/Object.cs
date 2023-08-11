@@ -1,34 +1,20 @@
 ﻿namespace Engine3D.EXMPL.OBJECTS;
 
-public class Map {
-    public Map(int wight, int height) {
-        Height = height;
-        Wight  = wight;
-
-        Body = new char[wight, height];
+public class Object {
+    public Object((int wight, int height, int depth) size, (int x, int y, int z) coordinates) {
+        Size = size;
+        Coordinates = coordinates;
     }
     
-    public Map(int wight, int height, string body) {
-        Height = height;
-        Wight  = wight;
+    public (int wight, int height, int depth) Size { get; set; } 
+    public (int x, int y, int z) Coordinates { get; set; } 
 
-        Body = new char[wight, height];
-        InsertMap(body);
+    public int[,,] Insert(int[,,] space) {
+        for (var i = Coordinates.x; i < Size.wight + Coordinates.x; i++)
+            for (var j = Coordinates.y; j < Size.height + Coordinates.y; j++)
+                for (var k = Coordinates.z; k < Size.depth + Coordinates.z; k++)
+                    space[k, j, i] = 1; 
+
+        return space;
     }
-    
-    public int Height { get; set; } 
-    public int Wight { get; set; }
-
-    private char[,] Body { get; set; }
-
-    public void InsertMap(string map) {
-        var pos = 0;
-        
-        for (var i = 0; i < Wight; i++) 
-            for (var j = 0; j < Height; j++)
-                if (pos < map.Length) 
-                    Body[i, j] = map[pos++];
-    }
-
-    public char[,] GetMap() => Body;
 }
