@@ -1,6 +1,13 @@
 ﻿namespace Engine3D.EXMPL.OBJECTS;
 
 public class World {
+    public World(Camera camera) {
+        Space = new int[20, 20, 20];
+        Cameras = new List<Camera> {
+            camera
+        };
+    }
+    
     public World(Camera camera, Object @object) {
         Space = new int[20, 20, 20];
         Cameras = new List<Camera> {
