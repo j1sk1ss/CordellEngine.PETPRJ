@@ -1,4 +1,4 @@
-﻿namespace Engine3D.EXMPL.OBJECTS;
+﻿namespace Engine3D.EXMPL.ENGINE_OBJECTS;
 
 public class World {
     public World(Camera camera) {

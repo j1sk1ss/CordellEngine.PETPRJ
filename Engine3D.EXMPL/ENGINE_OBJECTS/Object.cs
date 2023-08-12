@@ -1,4 +1,4 @@
-﻿namespace Engine3D.EXMPL.OBJECTS;
+﻿namespace Engine3D.EXMPL.ENGINE_OBJECTS;
 
 public class Object {
     public Object((int wight, int height, int depth) size, (int x, int y, int z) coordinates) {

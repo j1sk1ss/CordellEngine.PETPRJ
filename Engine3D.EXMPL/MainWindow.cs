@@ -1,5 +1,5 @@
-﻿using Engine3D.EXMPL.OBJECTS;
-using Object = Engine3D.EXMPL.OBJECTS.Object;
+﻿using Engine3D.EXMPL.ENGINE_OBJECTS;
+using Object = Engine3D.EXMPL.ENGINE_OBJECTS.Object;
 
 namespace Engine3D.EXMPL;
 

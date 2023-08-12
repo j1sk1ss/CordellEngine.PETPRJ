@@ -1,7 +1,7 @@
 ﻿using Engine3D.EXMPL.CONSTANTS;
 using Engine3D.EXMPL.SCRIPTS;
 
-namespace Engine3D.EXMPL.OBJECTS;
+namespace Engine3D.EXMPL.ENGINE_OBJECTS;
 
 public class Camera {
     public Camera() {
