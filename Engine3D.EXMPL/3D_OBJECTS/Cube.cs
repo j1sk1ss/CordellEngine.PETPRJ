@@ -6,10 +6,6 @@ public class Cube : IObject {
     public Cube(Vector3 position, Vector3 size) {
         Position = position;
         Size   = size;
-
-        Yzx = new Vector3(0);
-        Zxy = new Vector3(0);
-        T1  = new Vector3(0);
         
         Normal = new Vector3(0);
     }
@@ -18,31 +14,31 @@ public class Cube : IObject {
     private Vector3 Size { get; set; }
     private Vector3 Normal { get; set; }
     
-    public Vector2 Intersection(Vector3 cameraPosition, Vector3 cameraRay) {
-        //cameraPosition -= Position;
+    public Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+        rayOrigin -= Position;
         
-        var m = new Vector3(1) / cameraRay;
-        var n = m * cameraPosition;
-        var k = m.Abs() * Size;
-        var t1 = -n - k;
-        var t2 = -n + k;
+        var invertedRay = new Vector3(1d) / rayDirection;
+        var scaledOffset = invertedRay * rayOrigin;
+        var boxHalfSize = invertedRay.Abs() * Size;
+        
+        var tNear = -scaledOffset - boxHalfSize;
+        var tFar = -scaledOffset + boxHalfSize;
 
-        var tN = Math.Max(Math.Max(t1.X, t1.Y), t1.Z);
-        var tF = Math.Min(Math.Min(t2.X, t2.Y), t2.Z);
-        if (tN > tF || tF < .0) return new Vector2(-1);
+        var tNearMax = Math.Max(Math.Max(tNear.X, tNear.Y), tNear.Z);
+        var tFarMin = Math.Min(Math.Min(tFar.X, tFar.Y), tFar.Z);
+        if (tNearMax > tFarMin || tFarMin < .0d) {
+            intersectionNormal = new Vector3(0);
+            return new Vector2(-1d);
+        }
 
-        Yzx = new Vector3(t1.Y, t1.Z, t1.X);
-        Zxy = new Vector3(t1.Z, t1.X, t1.Y);
+        var yzxOrder = new Vector3(tNear.Y, tNear.Z, tNear.X);
+        var zxyOrder = new Vector3(tNear.Z, tNear.X, tNear.Y);
 
-        return new Vector2(tN, tF);
+        intersectionNormal = -rayDirection.Sign() * yzxOrder.Step(tNear) * zxyOrder.Step(tNear);
+        return new Vector2(tNearMax, tFarMin);
     }
 
-    private Vector3 Yzx { get; set; }
-    private Vector3 Zxy { get; set; }
-    private Vector3 T1 { get; set; }
-
+    public void SetPosition(Vector3 position) => Position = position;
+    
     public Vector3 GetPosition() => Position;
-
-    public Vector3 GetNormal(Vector3 cameraPosition, Vector3 cameraRay, double value) => 
-        -cameraRay.Sign() * Yzx.Step(T1) * Zxy.Step(T1);
 }

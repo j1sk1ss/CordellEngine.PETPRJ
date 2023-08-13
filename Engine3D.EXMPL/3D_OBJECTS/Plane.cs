@@ -10,11 +10,13 @@ public class Plane : IObject {
     
     private Vector3 Size { get; set; }
     private double High { get; set; }
-    
-    public Vector2 Intersection(Vector3 cameraPosition, Vector3 cameraRay) =>
-        new (-(cameraPosition.Dot(Size) + High) / cameraRay.Dot(Size));
-    
-    public Vector3 GetPosition() => new (0);
 
-    public Vector3 GetNormal(Vector3 cameraPosition, Vector3 cameraRay, double value) => new (0, 0, -1);
+    public Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+        intersectionNormal = new Vector3(0, 0, -1);
+        return new Vector2(-(rayOrigin.Dot(Size) + High) / rayDirection.Dot(Size));
+    }
+    
+    public Vector3 GetPosition() => Size;
+    
+    public void SetPosition(Vector3 position) => Size = position;
 }

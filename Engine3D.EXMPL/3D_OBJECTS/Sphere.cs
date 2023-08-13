@@ -16,20 +16,25 @@ public class Sphere : IObject {
     private double Radius { get; set; }
     private Vector3 Position { get; set; }
 
-    public Vector2 Intersection(Vector3 cameraPosition, Vector3 cameraRay) {
-        cameraPosition -= Position;
+    public Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+        rayOrigin -= Position;
         
-        var b = cameraPosition.Dot(cameraRay);
-        var c = cameraPosition.Dot(cameraPosition) - Radius * Radius;
+        var b = rayOrigin.Dot(rayDirection);
+        var c = rayOrigin.Dot(rayOrigin) - Radius * Radius;
         var h = b * b - c;
-        if (h < .0d) return new Vector2(-1.0d);
+        if (h < .0d) {
+            intersectionNormal = new Vector3(0);
+            return new Vector2(-1.0d);
+        }
 
         h = Math.Sqrt(h);
-        return new Vector2(-b - h, -b + h);
+        var intersection = new Vector2(-b - h, -b + h);
+        intersectionNormal = rayOrigin - Position + rayDirection * new Vector3(intersection.X);
+        
+        return intersection;
     }
     
     public Vector3 GetPosition() => Position;
     
-    public Vector3 GetNormal(Vector3 cameraPosition, Vector3 cameraRay, double value) => 
-        cameraPosition - Position + cameraRay * new Vector3(value);
+    public void SetPosition(Vector3 position) => Position = position;
 }

@@ -6,15 +6,15 @@ namespace Engine3D.EXMPL.ENGINE_OBJECTS;
 
 public class Camera {
     public Camera() {
-        Coordinates = new Vector3(0, 0, 0);
-        Angles = new Vector2(0, 0);
+        Coordinates = new Vector3(0);
+        Angles = new Vector3(0);
         Size = (120, 30);
         CameraDepth = 20;
         
         Initialization();
     }
 
-    public Camera(Vector3 coordinates, Vector2 angles) {
+    public Camera(Vector3 coordinates, Vector3 angles) {
         Coordinates = coordinates;
         Angles = angles;
         Size = (120, 30);
@@ -23,7 +23,7 @@ public class Camera {
         Initialization();
     }
 
-    public Camera(Vector3 coordinates, Vector2 angles, int cameraX, int cameraY) {
+    public Camera(Vector3 coordinates, Vector3 angles, int cameraX, int cameraY) {
         Coordinates = coordinates;
         Angles = angles;
         Size = (cameraX, cameraY);
@@ -40,7 +40,7 @@ public class Camera {
     }
     
     public Vector3 Coordinates { get; set; }
-    public Vector2 Angles { get; set; }
+    public Vector3 Angles { get; set; }
     public int CameraDepth { get; set; }
     private static (int wight, int height) Size { get; set; }
     
@@ -56,18 +56,24 @@ public class Camera {
                 var uv = new Vector2(i, j) / new Vector2(Size.wight, Size.height) * new Vector2(2d) - new Vector2(1d);
                 uv.X *= _aspect * PixelAspect;
 
-                var cameraRay = new Vector3(1, uv).Normalize();
+                var cameraRay = new Vector3(1, uv).Rotate(Angles).Normalize();
+                var minIt = 99999d;
                 for (var k = 0; k < 1; k++) {
                     foreach (var iObject in objects) {
-                        var intersection = iObject.Intersection(Coordinates, cameraRay);
+                        var intersection = iObject.Intersection(Coordinates, cameraRay, out var normal);
                         
-                        if (intersection.X > 0) {
-                            var normalizedPoint = iObject.GetNormal(Coordinates - iObject.GetPosition(), cameraRay, intersection.X);
-                            foreach (var light in lights) {
-                               _buffer[i + j * Size.wight] = Gradient[
-                                   (int)MathScripts.Clamp((int)(normalizedPoint.Dot(light) * 20), 0,
-                                       Gradient.Length - 2)]; 
-                            }
+                        if (intersection.X > 0 && intersection.X < minIt) {
+                            if (lights.Count > 0)
+                                foreach (var light in lights) {
+                                    _buffer[i + j * Size.wight] = Gradient[(int)MathScripts.Clamp(
+                                        Gradient.IndexOf(_buffer[i + j * Size.wight]) +
+                                        (int)(normal.Dot(light.Normalize()) * 20),
+                                        0, Gradient.Length - 2)];
+                                }
+                            else
+                                _buffer[i + j * Size.wight] = '@';
+
+                            minIt = intersection.X;
                         }
                     }
                     

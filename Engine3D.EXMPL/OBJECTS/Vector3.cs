@@ -63,15 +63,43 @@ public class Vector3 {
 
     public Vector3 Reflect(Vector3 n) => this - n * (new Vector3(2) * new Vector3(n.Dot(this)));
 
-    public Vector3 RotateX(double angle) => new(X,
-        Z * Math.Cos(angle) - Y * Math.Sin(angle),
-        Z * Math.Sin(angle) + Y * Math.Cos(angle));
+    public Vector3 Cross(Vector3 other) {
+        var newX = Y * other.Z - Z * other.Y;
+        var newY = Z * other.X - X * other.Z;
+        var newZ = X * other.Y - Y * other.X;
 
-    public Vector3 RotateY(double angle) => new(
-        X * Math.Cos(angle) - Z * Math.Sin(angle), Y,
-        X * Math.Sin(angle) + Z * Math.Cos(angle));
+        return new Vector3(newX, newY, newZ);
+    }
     
-    public Vector3 RotateZ(double angle) => new(
-        X * Math.Cos(angle) - Y * Math.Sin(angle), 
-        X * Math.Sin(angle) + Y * Math.Cos(angle), Z);
+    public Vector3 RotateX(double angle) {
+        var tempVector = this;
+        tempVector.Z = Z * Math.Cos(angle) - Y * Math.Sin(angle);
+        tempVector.Y = Z * Math.Sin(angle) + Y * Math.Cos(angle);
+
+        return tempVector;
+    }
+
+    public Vector3 RotateY(double angle) {
+        var tempVector = this;
+        tempVector.X = X * Math.Cos(angle) - Z * Math.Sin(angle);
+        tempVector.Z = X * Math.Sin(angle) + Z * Math.Cos(angle);
+
+        return tempVector;
+    }
+    
+    public Vector3 RotateZ(double angle) {
+        var tempVector = this;
+        tempVector.X = X * Math.Cos(angle) - Y * Math.Sin(angle);
+        tempVector.Y = X * Math.Sin(angle) + Y * Math.Cos(angle);
+
+        return tempVector;
+    }
+
+    public Vector3 Rotate(Vector3 angles) {
+        RotateX(angles.X);
+        RotateY(angles.Y);
+        RotateZ(angles.Z);
+
+        return this;
+    }
 }
