@@ -1,100 +1,89 @@
-﻿using Engine3D.EXMPL.CONSTANTS;
+﻿using Engine3D.EXMPL._3D_OBJECTS;
+using Engine3D.EXMPL.OBJECTS;
 using Engine3D.EXMPL.SCRIPTS;
 
 namespace Engine3D.EXMPL.ENGINE_OBJECTS;
 
 public class Camera {
     public Camera() {
-        Coordinates = (0, 0, 0);
-        Angles = (0, 0);
-        Size = (150, 40);
-        Fov = Math.PI / 3;
+        Coordinates = new Vector3(0, 0, 0);
+        Angles = new Vector2(0, 0);
+        Size = (120, 30);
         CameraDepth = 20;
-    }
-
-    public Camera(double coordinateX, double coordinateY, double horizontalAngle, double verticalAngle) {
-        Coordinates = (coordinateX, coordinateY, 0);
-        Angles = (horizontalAngle, verticalAngle);
-        Size = (150, 40);
-        Fov = Math.PI / 3;
-        CameraDepth = 20;
-    }
-
-    public Camera(double coordinateX, double coordinateY, double horizontalAngle, double verticalAngle,
-        int cameraX, int cameraY) {
-        Coordinates = (coordinateX, coordinateY, 0);
-        Angles = (horizontalAngle, verticalAngle);
-        Size = (cameraX, cameraY);
-        Fov = Math.PI / 3;
-        CameraDepth = 20;
-    }
-
-    public Camera(double coordinateX, double coordinateY, double horizontalAngle, double verticalAngle,
-        int cameraX, int cameraY, double fov) {
-        Coordinates = (coordinateX, coordinateY, 0);
-        Angles = (horizontalAngle, verticalAngle);
-        Size = (cameraX, cameraY);
-        Fov = fov;
-        CameraDepth = 20;
-    }
-
-    public (double x, double y, double z) Coordinates { get; set; }
-    public (double horizontal, double vertical) Angles { get; set; }
-    public static (int wight, int height) Size { get; set; }
-    public double Fov { get; set; }
-    public int CameraDepth { get; set; }
-    
-    private char[,] _buffer = null!;
-
-    public void GetView(World world) {
-        _buffer = new char[Size.wight, Size.height];
         
+        Initialization();
+    }
+
+    public Camera(Vector3 coordinates, Vector2 angles) {
+        Coordinates = coordinates;
+        Angles = angles;
+        Size = (120, 30);
+        CameraDepth = 20;
+        
+        Initialization();
+    }
+
+    public Camera(Vector3 coordinates, Vector2 angles, int cameraX, int cameraY) {
+        Coordinates = coordinates;
+        Angles = angles;
+        Size = (cameraX, cameraY);
+        CameraDepth = 20;
+        
+        Initialization();
+    }
+
+    private void Initialization() {
+        _aspect = Size.wight / (double)Size.height;
         Console.SetWindowSize(Size.wight, Size.height);
         Console.SetBufferSize(Size.wight, Size.height);
         Console.SetCursorPosition(0,0);
-        
+    }
+    
+    public Vector3 Coordinates { get; set; }
+    public Vector2 Angles { get; set; }
+    public int CameraDepth { get; set; }
+    private static (int wight, int height) Size { get; set; }
+    
+    private char[] _buffer = null!;
+    private double _aspect = 1d;
+    private const double PixelAspect = 11d / 24d;
+    private const string Gradient = " .:!/r(l1Z4H9W8$@";
+
+    public char[] GetView(List<IObject> objects, List<Vector3> lights) {
+        _buffer = new char[Size.wight * Size.height];
         for (var i = 0; i < Size.wight; i++) {
-            var rayDirection = Angles.horizontal + Fov / 2 - i * Fov / Size.wight;
-            var rayX = Math.Sin(rayDirection);
-            var rayY = Math.Cos(rayDirection);
-            
-            for (var z = 0; z < Size.height; z++) {
-                var distance = 0d;
-                while (distance < CameraDepth) {
-                    distance += EngineValues.LightSpeed;
+            for (var j = 0; j < Size.height; j++) {
+                var uv = new Vector2(i, j) / new Vector2(Size.wight, Size.height) * new Vector2(2d) - new Vector2(1d);
+                uv.X *= _aspect * PixelAspect;
 
-                    var x = (int)(Coordinates.x + rayX * distance);
-                    var y = (int)(Coordinates.y + rayY * distance);
-
-                    if (x < 0 || x >= CameraDepth + Coordinates.x || y < 0 || y >= CameraDepth + Coordinates.y 
-                        || z < 0 || z >= CameraDepth + Coordinates.z) {
-                        distance = CameraDepth;
-                        break;
+                var cameraRay = new Vector3(1, uv).Normalize();
+                for (var k = 0; k < 1; k++) {
+                    foreach (var iObject in objects) {
+                        var intersection = iObject.Intersection(Coordinates, cameraRay);
+                        
+                        if (intersection.X > 0) {
+                            var normalizedPoint = iObject.GetNormal(Coordinates - iObject.GetPosition(), cameraRay, intersection.X);
+                            foreach (var light in lights) {
+                               _buffer[i + j * Size.wight] = Gradient[
+                                   (int)MathScripts.Clamp((int)(normalizedPoint.Dot(light) * 20), 0,
+                                       Gradient.Length - 2)]; 
+                            }
+                        }
                     }
-
-                    if (world.Space[x, y, z] == '1')
-                        break;
+                    
+                    
+                    //if (maxValue < double.MaxValue) {
+                        //distance *= (n.Dot(lightRay) * .5d + .5d) * albedo;
+                        //cameraPosition += cameraRay * (maxValue - .01d);
+                        //cameraRay = Vector3.Reflect(cameraRay, n);
+                    //} else break;
                 }
 
-                var block = (int)(Size.height / 2d - Size.height * Fov / distance);
-                var floor = Size.height - block;
-
-                
-                if (z <= block)
-                    _buffer[i, z] = ' ';
-                else if (z > block && z <= floor)
-                    _buffer[i, z] = (CameraDepth / distance) switch {
-                        < 1.3f and >= 1f => '░',
-                        >= 1.3f and < 2f => '▒',
-                        >= 2f and < 4f   => '▓',
-                        >= 4f and < 20f  => '█',
-                        _ => ' '
-                    };
-                else
-                    _buffer[i, z] = '.';
+                //_buffer[i + j * Size.wight] = Gradient[(int)MathScripts.Clamp((int)(distance * 20), 0, Gradient.Length - 2)];
             }
         }
 
-        Screen.Write(_buffer);
+        Console.Write(_buffer);
+        return _buffer;
     }
 }

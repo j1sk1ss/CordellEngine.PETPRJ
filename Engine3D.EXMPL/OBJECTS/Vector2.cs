@@ -19,7 +19,7 @@ public class Vector2 {
     
     public static Vector2 operator -(Vector2 firstVector, Vector2 secondVector) =>
         new (firstVector.X - secondVector.X, firstVector.Y - secondVector.Y);
-    
+
     public static Vector2 operator /(Vector2 firstVector, Vector2 secondVector) =>
         new (firstVector.X / secondVector.X, firstVector.Y / secondVector.Y);
     
