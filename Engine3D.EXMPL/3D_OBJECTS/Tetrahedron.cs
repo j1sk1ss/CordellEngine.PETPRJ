@@ -1,4 +1,5 @@
-﻿using Engine3D.EXMPL.OBJECTS;
+﻿using System.Drawing;
+using Engine3D.EXMPL.OBJECTS;
 
 namespace Engine3D.EXMPL._3D_OBJECTS;
 

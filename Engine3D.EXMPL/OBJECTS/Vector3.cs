@@ -58,7 +58,7 @@ public class Vector3 {
     public Vector3 Sign() => new(Math.Sign(X), Math.Sign(Y), Math.Sign(Z));
 
     public Vector3 Step(Vector3 edge) =>
-        new(MathScripts.Step(edge.X, X), MathScripts.Step(edge.Y, Y), MathScripts.Step(edge.Z, Z));
+        new(MathScripts.Step(X, edge.X), MathScripts.Step(Y, edge.Y), MathScripts.Step(Z, edge.Z));
 
 
     public Vector3 Reflect(Vector3 n) => this - n * (new Vector3(2) * new Vector3(n.Dot(this)));
@@ -102,4 +102,11 @@ public class Vector3 {
 
         return this;
     }
+
+
+    public static Vector3 Max(Vector3 firstVector, Vector3 secondVector) =>
+        new Vector3(Math.Max(firstVector.X, secondVector.X), Math.Max(firstVector.Y, secondVector.Y), Math.Max(firstVector.Z, secondVector.Z));
+    
+    public static Vector3 Min(Vector3 firstVector, Vector3 secondVector) =>
+        new Vector3(Math.Min(firstVector.X, secondVector.X), Math.Min(firstVector.Y, secondVector.Y), Math.Min(firstVector.Z, secondVector.Z));
 }

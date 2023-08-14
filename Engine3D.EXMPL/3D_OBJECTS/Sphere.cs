@@ -4,15 +4,15 @@ namespace Engine3D.EXMPL._3D_OBJECTS;
 
 public class Sphere : IObject {
     public Sphere(double radius) {
-        Radius = radius;
-        Position = new Vector3(0);
+        Radius       = radius;
+        Position     = new Vector3(0);
     }
     
     public Sphere(Vector3 position, double radius) {
-        Position = position;
-        Radius   = radius;
+        Position     = position;
+        Radius       = radius;
     }
-
+    
     private double Radius { get; set; }
     private Vector3 Position { get; set; }
 
