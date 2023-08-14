@@ -1,21 +1,26 @@
 ﻿using Engine3D.EXMPL.OBJECTS;
 
-namespace Engine3D.EXMPL._3D_OBJECTS;
+namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY_OBJECTS;
 
 public class Sphere : IObject {
-    public Sphere(double radius) {
-        Radius       = radius;
-        Position     = new Vector3(0);
-    }
-    
-    public Sphere(Vector3 position, double radius) {
+    /// <summary>
+    /// Sphere object
+    /// </summary>
+    /// <param name="position"> Sphere coordinates </param>
+    /// <param name="radius"> Sphere radius </param>
+    /// <param name="name"> Sphere name </param>
+    public Sphere(Vector3 position, double radius, string name) {
         Position     = position;
         Radius       = radius;
+        Name         = name;
     }
     
+    private string Name { get; set; }
     private double Radius { get; set; }
     private Vector3 Position { get; set; }
 
+    public string GetName() => Name;
+    
     public Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         rayOrigin -= Position;
         

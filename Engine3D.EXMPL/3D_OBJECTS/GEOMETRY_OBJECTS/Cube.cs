@@ -1,29 +1,32 @@
 ﻿using Engine3D.EXMPL.OBJECTS;
 
-namespace Engine3D.EXMPL._3D_OBJECTS;
+namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY_OBJECTS;
 
 public class Cube : IObject {
-    public Cube(Vector3 position, Vector3 size) {
+    /// <summary>
+    /// Cube object
+    /// </summary>
+    /// <param name="position"> Cube coordinates </param>
+    /// <param name="size"> Cube size </param>
+    /// <param name="name"> Cube name </param>
+    public Cube(Vector3 position, Vector3 size, string name) {
         Position = position;
-        Size = size;
+        Size     = size;
+        Name     = name;
         
         Normal = new Vector3(0);
     }
 
+    private string Name { get; set; }
     private Vector3 Position { get; set; }
     private Vector3 Size { get; set; }
-    
+
     private Vector3 Normal { get; set; }
-    
+
+    public string GetName() => Name;
+
     public Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         rayOrigin -= Position;
-        
-        var invertedRay = new Vector3(1d) / rayDirection;
-        var scaledOffset = invertedRay * rayOrigin;
-        var boxHalfSize = invertedRay.Abs() * Size;
-
-        //var tNear = -scaledOffset - boxHalfSize;
-        //var tFar = -scaledOffset + boxHalfSize;
 
         var minVector = Position;
         var maxVector = new Vector3(Position.X + Size.X, Position.Y + Size.Y, Position.Z + Size.Z);
@@ -32,11 +35,8 @@ public class Cube : IObject {
             maxVector = Position;
         }
         
-        var cubeMin = minVector;
-        var cubeMax = maxVector;
-
-        var tMin = (cubeMin - rayOrigin) / rayDirection;
-        var tMax = (cubeMax - rayOrigin) / rayDirection;
+        var tMin = (minVector - rayOrigin) / rayDirection;
+        var tMax = (maxVector - rayOrigin) / rayDirection;
         
         var tNear = Vector3.Min(tMin, tMax);
         var tFar = Vector3.Max(tMin, tMax);
@@ -52,7 +52,6 @@ public class Cube : IObject {
         var zxyOrder = new Vector3(tNear.Z, tNear.X, tNear.Y);
 
         intersectionNormal = -rayDirection.Sign() * yzxOrder.Step(tNear) * zxyOrder.Step(tNear);
-        //intersectionNormal = -rayDirection.Cross(yzxOrder.Step(tNear) * zxyOrder.Step(tNear)).Normalize();
         return new Vector2(tNearMax, tFarMin);
     }
 

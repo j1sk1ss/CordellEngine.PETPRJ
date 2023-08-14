@@ -27,10 +27,10 @@ public class Vector3 {
         Length = Math.Sqrt(X * X + Y * Y + Z * Z);
     }
 
-    public double X { get; set; }
-    public double Y { get; set; }
-    public double Z { get; set; }
-
+    
+    public double X { get; private set; }
+    public double Y { get; private set; }
+    public double Z { get; private set; }
     private double Length { get; set; }
 
 
@@ -47,8 +47,7 @@ public class Vector3 {
         new (firstVector.X * secondVector.X, firstVector.Y * secondVector.Y, firstVector.Z * secondVector.Z);
 
     public static Vector3 operator -(Vector3 vector) => new(-vector.X, -vector.Y, -vector.Z);
-
-
+    
     public Vector3 Normalize() => this / new Vector3(Length);
 
     public double Dot(Vector3 secondVector) => X * secondVector.X + Y * secondVector.Y + Z * secondVector.Z;
@@ -59,8 +58,7 @@ public class Vector3 {
 
     public Vector3 Step(Vector3 edge) =>
         new(MathScripts.Step(X, edge.X), MathScripts.Step(Y, edge.Y), MathScripts.Step(Z, edge.Z));
-
-
+    
     public Vector3 Reflect(Vector3 n) => this - n * (new Vector3(2) * new Vector3(n.Dot(this)));
 
     public Vector3 Cross(Vector3 other) {
@@ -102,8 +100,7 @@ public class Vector3 {
 
         return this;
     }
-
-
+    
     public static Vector3 Max(Vector3 firstVector, Vector3 secondVector) =>
         new Vector3(Math.Max(firstVector.X, secondVector.X), Math.Max(firstVector.Y, secondVector.Y), Math.Max(firstVector.Z, secondVector.Z));
     

@@ -1,25 +1,28 @@
-﻿using System.Drawing;
-using Engine3D.EXMPL.OBJECTS;
+﻿using Engine3D.EXMPL.OBJECTS;
 
-namespace Engine3D.EXMPL._3D_OBJECTS;
+namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY_OBJECTS;
 
-public class Tetrahedron : IObject
-{
-    public Tetrahedron(Vector3 position) {
+public class Tetrahedron : IObject {
+    public Tetrahedron(Vector3 position, string name) {
         Position = position;
+        Name     = name;
         
         Vertices = new Vector3[5];
         for (var i = 0; i < Vertices.Length; i++) 
             Vertices[i] = position;
     }
 
-    public Tetrahedron(Vector3 position, Vector3[] vertices) {
+    public Tetrahedron(Vector3 position, Vector3[] vertices, string name) {
         Position = position;
         Vertices = vertices;
+        Name     = name;
     }
     
+    private string Name { get; set; }
     private Vector3 Position { get; set; }
     private Vector3[] Vertices { get; set; }
+    
+    public string GetName() => Name;
     
     public Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         rayOrigin -= Position;
