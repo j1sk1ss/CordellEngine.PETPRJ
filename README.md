@@ -1,11 +1,75 @@
 # Cordell Engine
 Simple library for implementing 3D graphics anywhere
 
-## Simple geometry and movement
+# Simple creation of objects
+      var space = new Space(new ChromeCamera(new Vector3(-4,0,0), new Vector3(0)), 
+          new List<Object> {
+              new Sphere(new Vector3(0, 3, 0), new Vector3(1), Material.DefaultMaterial, "sphere_1"),
+              new Sphere(new Vector3(0, -3, 0), new Vector3(1), Material.DefaultMaterial, "sphere_2"),
+              new Light(new Vector3(-1, 0, -1), 1, "light1_1")
+          });
+
+-----------------------------------
+## Example of geometry in moving
 ![Alt Text](https://github.com/j1sk1ss/SharpEngine.EXMPL/blob/master/Second.gif)
 
-## Planes, spheres and cubes
+-----------------------------------
+## 3D planing on scene
 ![Alt Text](https://github.com/j1sk1ss/SharpEngine.EXMPL/blob/master/Fourth.gif)
 
-## Color function
+-----------------------------------
+## Color functionality
+Every object ob scene have **MATERIAL** parametr with next constructors:
+
+    public Material(string gradient) {
+        Gradient = gradient;
+        ConsoleColor = ConsoleColor.White;
+    }
+
+    public Material(ConsoleColor color) {
+        Gradient     = " .:!/r(l1Z4H9W8$@";
+        ConsoleColor = color;
+    }
+
+    public Material(string gradient, ConsoleColor color) {
+        Gradient     = gradient;
+        ConsoleColor = color;
+    }
+
 ![Alt Text](https://github.com/j1sk1ss/SharpEngine.EXMPL/blob/master/Third.gif)
+
+-----------------------------------
+## Collisions, spawning and deleting
+U also can **SPAWN**, **DELETE** and check **COLLISIONS** of objects in space. For example next code:
+
+    public static void Main() {
+        Console.CursorVisible = false;
+    
+        var space = new Space(new ChromeCamera(new Vector3(-4,0,0), new Vector3(0)), 
+            new List<Object> {
+                new Sphere(new Vector3(0, 3, 0), new Vector3(1), Material.DefaultMaterial, "sphere_1"),
+                new Sphere(new Vector3(0, -3, 0), new Vector3(1), Material.DefaultMaterial, "sphere_2"),
+                new Light(new Vector3(-1, 0, -1), 1, "light1_1")
+            });
+    
+        var t = 0;
+        while (true) {
+            t++;
+            space.GetView();
+            space.GetObject("new_sphere").SetPosition(new Vector3(Math.Sin(t * .01), 0, Math.Cos(t * .01)));
+            
+            
+            space.GetObject("sphere_2").Move(new Vector3(0,.0010,0));
+            if (space.GetObject("sphere_1").CollisionObjects(space.Objects).Count > 0)
+            {
+                space.DeleteObject("sphere_1");
+                space.CreateObject(new Sphere(new Vector3(0), new Vector3(1), Material.DefaultMaterial, "new_sphere"));
+            }
+        }
+    }
+
+Will return next scene:
+
+![Alt Text](https://github.com/j1sk1ss/SharpEngine.EXMPL/blob/master/Fives.gif)
+
+-----------------------------------
