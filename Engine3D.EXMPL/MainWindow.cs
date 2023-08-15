@@ -15,20 +15,20 @@ public static class MainWindow {
     public static void Main() {
         Console.CursorVisible = false;
 
-        var space = new Space(new ColorCamera(new Vector3(-4,0,0), new Vector3(0)), 
+        var space = new Space(new ChromeCamera(new Vector3(-4,0,0), new Vector3(0)), 
             new List<Object> {
-                new Sphere(new Vector3(0), new Vector3(1), new Material(ConsoleColor.Red)),
-                new Light(new Vector3(0, 1, -3), 1, "light1_1"),
-                new Plane(new Vector3(0,0, -1), new Vector3(1), new Material(ConsoleColor.Yellow))
+                //new Cube(new Vector3(0), new Vector3(2), Material.DefaultMaterial, "cube2"),
+                //new Light(new Vector3(0, 1, -3), 1, "light1_1"),
+                new Cube(new Vector3(0,0,0), new Vector3(2))
             });
 
         var t = 0;
+
+        space.GetCamera().Angles = new Vector3(0, 1.25, 0);
+        
         while (true) {
             t++;
             space.GetView();
-            
-            space.GetObject("light1_1").SetPosition(new Vector3(Math.Sin(t * .1), Math.Cos(t * .1), -2));
-            space.GetObject("sphere1").SetPosition(new Vector3(0, 0, Math.Sin(t * .1)));
         }
     }
 }

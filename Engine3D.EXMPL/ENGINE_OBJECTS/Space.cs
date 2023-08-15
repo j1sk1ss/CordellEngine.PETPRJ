@@ -1,5 +1,7 @@
 ﻿using Engine3D.EXMPL._3D_OBJECTS.GEOMETRY;
+using Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.GEOMETRY_OBJECTS;
 using Engine3D.EXMPL.ENGINE_OBJECTS.CAMERA;
+using Engine3D.EXMPL.OBJECTS;
 using Object = Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.Object;
 
 namespace Engine3D.EXMPL.ENGINE_OBJECTS;
@@ -25,7 +27,7 @@ public class Space {
     }
 
     private Camera Camera { get; set; }
-    private List<Object> Objects { get; set; }
+    public List<Object> Objects { get; set; }
 
     /// <summary>
     /// Get camera view in space
@@ -45,5 +47,24 @@ public class Space {
     /// <param name="name"> Object name </param>
     /// <returns> Object </returns>
     public Object GetObject(string name) =>
-        Objects.FirstOrDefault(iObject => iObject.GetName() == name)!;
+        Objects.FirstOrDefault(iObject => iObject.GetName() == name) ?? new NullObject(new Vector3(0), new Vector3(0));
+
+    /// <summary>
+    /// Add object into space
+    /// </summary>
+    /// <param name="obj"> New object </param>
+    public void CreateObject(Object obj) => Objects.Add(obj);
+
+    /// <summary>
+    /// Delete object from space
+    /// </summary>
+    /// <param name="name"> Object name </param>
+    public void DeleteObject(string name) {
+        foreach (var currentObject in Objects) {
+            if (currentObject.GetName() == name) {
+                Objects.Remove(currentObject);
+                break;
+            }
+        }
+    }
 }

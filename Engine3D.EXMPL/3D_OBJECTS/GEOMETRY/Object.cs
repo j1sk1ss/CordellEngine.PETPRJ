@@ -54,4 +54,36 @@ public abstract class Object {
     /// </summary>
     /// <returns> Material of object </returns>
     public Material GetMaterial() => Material;
+
+    /// <summary>
+    /// Get object size
+    /// </summary>
+    /// <returns> Object size </returns>
+    public Vector3 GetSize() => Size;
+
+    /// <summary>
+    /// Get collisions between objects
+    /// </summary>
+    /// <param name="objects"> List of objects on scene </param>
+    /// <returns></returns>
+    public List<Object> CollisionObjects(IEnumerable<Object> objects) =>
+        objects.Where(currentObject => currentObject != this).Where(currentObject => Collision(this, currentObject)).ToList();
+    
+    /// <summary>
+    /// Get collision status of objects
+    /// </summary>
+    /// <param name="firstObject"> First object </param>
+    /// <param name="secondObject"> Second object </param>
+    /// <returns></returns>
+    private static bool Collision(Object firstObject, Object secondObject) {
+        var firstCenter = new Vector3(firstObject.GetPosition().X + firstObject.GetSize().X / 2, 
+            firstObject.GetPosition().Y + firstObject.GetSize().Y / 2, firstObject.GetPosition().Z + firstObject.GetSize().Z / 2);
+        var secondCenter = new Vector3(secondObject.GetPosition().X + secondObject.GetSize().X / 2, 
+            secondObject.GetPosition().Y + secondObject.GetSize().Y / 2, secondObject.GetPosition().Z + secondObject.GetSize().Z / 2);
+    
+        var distance = (float)Math.Sqrt(Math.Pow(firstCenter.X - secondCenter.X, 2) + Math.Pow(firstCenter.Y - secondCenter.Y, 2) 
+            + Math.Pow(firstCenter.Z - secondCenter.Z, 2));
+        
+        return distance <= .5;
+    }
 }
