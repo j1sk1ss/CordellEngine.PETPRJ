@@ -3,7 +3,7 @@ using Engine3D.EXMPL.OBJECTS;
 
 namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.GEOMETRY_OBJECTS;
 
-public class Cube : IObject {
+public class Cube : Object {
     /// <summary>
     /// Cube object
     /// </summary>
@@ -11,25 +11,14 @@ public class Cube : IObject {
     /// <param name="size"> Cube size </param>
     /// <param name="material"> Material </param>
     /// <param name="name"> Cube name </param>
-    public Cube(Vector3 position, Vector3 size, Material material = null!, string name = "cube1") {
+    public Cube(Vector3 position, Vector3 size, Material material = null!, string name = "cube1") : base(position, size, material, name) {
         Position = position;
         Size     = size;
         Name     = name;
         Material = material == null! ? Material.DefaultMaterial : material;
-
-        Normal = new Vector3(0);
     }
 
-    private string Name { get; set; }
-    private Vector3 Position { get; set; }
-    private Vector3 Size { get; set; }
-    private Material Material { get; set; }
-
-    private Vector3 Normal { get; set; }
-
-    public string GetName() => Name;
-
-    public Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+    public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         rayOrigin -= Position;
 
         var minVector = Position;
@@ -58,10 +47,4 @@ public class Cube : IObject {
         intersectionNormal = -rayDirection.Sign() * yzxOrder.Step(tNear) * zxyOrder.Step(tNear);
         return new Vector2(tNearMax, tFarMin);
     }
-
-    public void SetPosition(Vector3 position) => Position = position;
-
-    public Vector3 GetPosition() => Position;
-
-    public Material GetMaterial() => Material;
 }
