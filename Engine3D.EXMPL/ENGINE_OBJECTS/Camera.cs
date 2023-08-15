@@ -1,5 +1,5 @@
-﻿using Engine3D.EXMPL._3D_OBJECTS;
-using Engine3D.EXMPL._3D_OBJECTS.LIGHT_OBJECTS;
+﻿using Engine3D.EXMPL._3D_OBJECTS.GEOMETRY;
+using Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.LIGHT_OBJECTS;
 using Engine3D.EXMPL.OBJECTS;
 using Engine3D.EXMPL.SCRIPTS;
 
@@ -46,9 +46,9 @@ public class Camera {
     private static (int wight, int height) Size { get; set; }
 
     private char[] _buffer = null!;
+    private ConsoleColor[] _colorBuffer = null!;
     private double _aspect = 1d;
     private const double PixelAspect = 11d / 24d;
-    private const string Gradient = " .:!/r(l1Z4H9W8$@";
 
     /// <summary>
     /// Get camera view via console or char array
@@ -58,6 +58,7 @@ public class Camera {
     public char[] GetView(List<IObject> objects) {
         var lights = objects.Where(iObject => iObject.GetType() == typeof(Light)).ToList();
         _buffer = new char[Size.wight * Size.height];
+        _colorBuffer = new ConsoleColor[Size.wight * Size.height];
 
         for (var i = 0; i < Size.wight; i++) 
             for (var j = 0; j < Size.height; j++) {
@@ -66,33 +67,34 @@ public class Camera {
 
                 var cameraRay = new Vector3(1, uv).Rotate(Angles).Normalize();
                 var minIt = 99999d;
+                
+                foreach (var iObject in objects) {
+                    var intersection = iObject.Intersection(Coordinates, cameraRay, out var normal);
+                    if (!(intersection.X > 0) || !(intersection.X < minIt)) continue;
 
-                var rayOrigin = Coordinates;
-                var rayDirection = cameraRay;
-
-                for (var k = 0; k < 1; k++) {
-                    foreach (var iObject in objects) {
-                        var intersection = iObject.Intersection(rayOrigin, rayDirection, out var normal);
-                        if (!(intersection.X > 0) || !(intersection.X < minIt)) continue;
+                    if ((from otherObject in objects where otherObject != iObject select otherObject.Intersection(
+                            Coordinates, cameraRay, out _)).Any(shadowIntersection =>
+                            shadowIntersection.X > 0 && shadowIntersection.X < intersection.X)) 
+                        _buffer[i + j * Size.wight] = ' ';
+                    else {
+                        _colorBuffer[i + j * Size.wight] = iObject.GetMaterial().GetGColor();
                         if (lights.Count > 0)
-                            foreach (var light in lights) {
-                                _buffer[i + j * Size.wight] = Gradient[(int)MathScripts.Clamp(
-                                    Gradient.IndexOf(_buffer[i + j * Size.wight]) +
-                                    (int)(normal.Dot(light.GetPosition().Normalize()) * 20),
-                                    0, Gradient.Length - 2)];
-
-                                if (!(minIt < 99999)) continue;
-                                rayOrigin += rayDirection * (new Vector3(minIt) - new Vector3(0.01));
-                                rayDirection = rayDirection.Reflect(normal);
-                            }
+                            foreach (var light in lights.Cast<Light>())
+                                _buffer[i + j * Size.wight] = iObject.GetMaterial().GetGradient()[
+                                    (int)MathScripts.Clamp(
+                                        iObject.GetMaterial().GetGradient().IndexOf(_buffer[i + j * Size.wight]) +
+                                        (int)((normal.Dot(light.GetPosition().Normalize()) * 20) * light.GetStrength()),
+                                        0, iObject.GetMaterial().GetGradient().Length - 2)];
                         else _buffer[i + j * Size.wight] = '@';
-
-                        minIt = intersection.X;
                     }
+
+                    minIt = intersection.X;
                 }
             }
         
-        Console.Write(_buffer); 
+        Console.Write(_buffer);
+        Console.SetCursorPosition(0,0);
+        
         return _buffer;
     }
 }

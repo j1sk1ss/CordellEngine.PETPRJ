@@ -1,6 +1,7 @@
-﻿using Engine3D.EXMPL.OBJECTS;
+﻿using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
+using Engine3D.EXMPL.OBJECTS;
 
-namespace Engine3D.EXMPL._3D_OBJECTS;
+namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY;
 
 public interface IObject {
     /// <summary>
@@ -29,4 +30,10 @@ public interface IObject {
     /// </summary>
     /// <param name="position"> New position </param>
     public void SetPosition(Vector3 position);
+
+    /// <summary>
+    /// Gets material
+    /// </summary>
+    /// <returns> Material of object </returns>
+    public Material GetMaterial();
 }

@@ -1,6 +1,7 @@
-﻿using Engine3D.EXMPL.OBJECTS;
+﻿using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
+using Engine3D.EXMPL.OBJECTS;
 
-namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY_OBJECTS;
+namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.GEOMETRY_OBJECTS;
 
 public class Cube : IObject {
     /// <summary>
@@ -8,18 +9,21 @@ public class Cube : IObject {
     /// </summary>
     /// <param name="position"> Cube coordinates </param>
     /// <param name="size"> Cube size </param>
+    /// <param name="material"> Material </param>
     /// <param name="name"> Cube name </param>
-    public Cube(Vector3 position, Vector3 size, string name) {
+    public Cube(Vector3 position, Vector3 size, Material material = null!, string name = "cube1") {
         Position = position;
         Size     = size;
         Name     = name;
-        
+        Material = material == null! ? Material.DefaultMaterial : material;
+
         Normal = new Vector3(0);
     }
 
     private string Name { get; set; }
     private Vector3 Position { get; set; }
     private Vector3 Size { get; set; }
+    private Material Material { get; set; }
 
     private Vector3 Normal { get; set; }
 
@@ -58,4 +62,6 @@ public class Cube : IObject {
     public void SetPosition(Vector3 position) => Position = position;
 
     public Vector3 GetPosition() => Position;
+
+    public Material GetMaterial() => Material;
 }

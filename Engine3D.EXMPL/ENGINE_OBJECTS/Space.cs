@@ -1,4 +1,5 @@
 ﻿using Engine3D.EXMPL._3D_OBJECTS;
+using Engine3D.EXMPL._3D_OBJECTS.GEOMETRY;
 
 namespace Engine3D.EXMPL.ENGINE_OBJECTS;
 

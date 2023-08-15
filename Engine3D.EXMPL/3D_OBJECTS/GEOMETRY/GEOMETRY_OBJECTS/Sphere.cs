@@ -1,6 +1,7 @@
-﻿using Engine3D.EXMPL.OBJECTS;
+﻿using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
+using Engine3D.EXMPL.OBJECTS;
 
-namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY_OBJECTS;
+namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.GEOMETRY_OBJECTS;
 
 public class Sphere : IObject {
     /// <summary>
@@ -8,16 +9,19 @@ public class Sphere : IObject {
     /// </summary>
     /// <param name="position"> Sphere coordinates </param>
     /// <param name="radius"> Sphere radius </param>
+    /// <param name="material"> Material </param>
     /// <param name="name"> Sphere name </param>
-    public Sphere(Vector3 position, double radius, string name) {
+    public Sphere(Vector3 position, double radius, Material material = null!, string name = "sphere1") {
         Position     = position;
         Radius       = radius;
         Name         = name;
+        Material     = material == null! ? Material.DefaultMaterial : material;
     }
     
     private string Name { get; set; }
     private double Radius { get; set; }
     private Vector3 Position { get; set; }
+    private Material Material { get; set; }
 
     public string GetName() => Name;
     
@@ -42,4 +46,6 @@ public class Sphere : IObject {
     public Vector3 GetPosition() => Position;
     
     public void SetPosition(Vector3 position) => Position = position;
+    
+    public Material GetMaterial() => Material;
 }
