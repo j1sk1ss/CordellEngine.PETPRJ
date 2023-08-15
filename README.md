@@ -1,4 +1,4 @@
-# Sharp Engine
+# Cordell Engine
 Simple library for implementing 3D graphics anywhere
 
 ## Simple geometry and movement
