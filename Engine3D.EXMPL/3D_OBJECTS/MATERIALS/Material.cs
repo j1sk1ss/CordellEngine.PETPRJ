@@ -6,7 +6,7 @@ public class Material {
     /// </summary>
     /// <param name="gradient"> Gradient of material </param>
     public Material(string gradient) {
-        Gradient = gradient;
+        Gradient     = gradient;
         ConsoleColor = ConsoleColor.White;
     }
     
@@ -29,12 +29,20 @@ public class Material {
         ConsoleColor = color;
     }
     
-    private string Gradient { get; set; }
-    private ConsoleColor ConsoleColor { get; set; }
-
+    private string Gradient { get; }
+    private ConsoleColor ConsoleColor { get; }
+    
+    /// <summary>
+    /// Get material gradient
+    /// </summary>
+    /// <returns> Gradient </returns>
     public string GetGradient() => Gradient;
     
+    /// <summary>
+    /// Get material color
+    /// </summary>
+    /// <returns> Color </returns>
     public ConsoleColor GetGColor() => ConsoleColor;
 
-    public static Material DefaultMaterial => new Material(" .:!/r(l1Z4H9W8$@");
+    public static Material DefaultMaterial => new (" .:!/r(l1Z4H9W8$@");
 }
