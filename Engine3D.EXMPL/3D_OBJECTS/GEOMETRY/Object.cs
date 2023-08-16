@@ -66,8 +66,9 @@ public abstract class Object {
     /// </summary>
     /// <param name="objects"> List of objects on scene </param>
     /// <returns></returns>
-    public List<Object> CollisionObjects(IEnumerable<Object> objects) =>
-        objects.Where(currentObject => currentObject != this).Where(currentObject => Collision(this, currentObject)).ToList();
+    public List<Object> CollisionObjects(IEnumerable<Object> objects, double minDistance) =>
+        objects.Where(currentObject => currentObject != this).Where(currentObject => 
+            Collision(this, currentObject, minDistance)).ToList();
     
     /// <summary>
     /// Get collision status of objects
@@ -75,7 +76,7 @@ public abstract class Object {
     /// <param name="firstObject"> First object </param>
     /// <param name="secondObject"> Second object </param>
     /// <returns></returns>
-    private static bool Collision(Object firstObject, Object secondObject) {
+    private static bool Collision(Object firstObject, Object secondObject, double minDistance) {
         var firstCenter = new Vector3(firstObject.GetPosition().X + firstObject.GetSize().X / 2, 
             firstObject.GetPosition().Y + firstObject.GetSize().Y / 2, firstObject.GetPosition().Z + firstObject.GetSize().Z / 2);
         var secondCenter = new Vector3(secondObject.GetPosition().X + secondObject.GetSize().X / 2, 
@@ -84,6 +85,6 @@ public abstract class Object {
         var distance = (float)Math.Sqrt(Math.Pow(firstCenter.X - secondCenter.X, 2) + Math.Pow(firstCenter.Y - secondCenter.Y, 2) 
             + Math.Pow(firstCenter.Z - secondCenter.Z, 2));
         
-        return distance <= .5;
+        return distance <= minDistance;
     }
 }

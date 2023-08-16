@@ -29,7 +29,7 @@ public class Collection : Object {
         var normal = new Vector3(0);
 
         foreach (var obj in Objects) {
-            vector += obj.Intersection(rayOrigin, rayDirection, out var currentNormal);
+            vector += obj.Intersection(rayOrigin + Position, rayDirection, out var currentNormal);
             normal += currentNormal;
         }
 
