@@ -21,16 +21,16 @@ public class Sphere : Object {
     public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         rayOrigin -= Position;
         
-        var b = rayOrigin.Dot(rayDirection);
+        var rayAngle = rayOrigin.Dot(rayDirection);
         var c = rayOrigin.Dot(rayOrigin) - Size.X * Size.X;
-        var h = b * b - c;
+        var h = rayAngle * rayAngle - c;
         if (h < .0d) {
             intersectionNormal = new Vector3(0);
             return new Vector2(-1.0d);
         }
 
         h = Math.Sqrt(h);
-        var intersection = new Vector2(-b - h, -b + h);
+        var intersection = new Vector2(-rayAngle - h, -rayAngle + h);
         intersectionNormal = rayOrigin - Position + rayDirection * new Vector3(intersection.X);
         
         return intersection;

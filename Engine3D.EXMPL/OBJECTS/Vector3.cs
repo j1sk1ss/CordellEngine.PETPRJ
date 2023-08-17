@@ -45,7 +45,7 @@ public class Vector3 {
     public double X { get; private set; }
     public double Y { get; private set; }
     public double Z { get; private set; }
-    private double Length { get; set; }
+    public double Length { get; set; }
     
     public static Vector3 operator +(Vector3 firstVector, Vector3 secondVector) =>
         new (firstVector.X + secondVector.X, firstVector.Y + secondVector.Y, firstVector.Z + secondVector.Z);

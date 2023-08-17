@@ -69,14 +69,17 @@ public abstract class Camera {
                 var cameraRay = new Vector3(1, uv).Rotate(Angles).Normalize();
                 var minIt = 99999d;
 
+                var rayOrigin = Coordinates;
+                var rayDirection = cameraRay;
+                
                 foreach (var iObject in objects) {
-                    var intersection = iObject.Intersection(Coordinates, cameraRay, out var normal);
+                    var intersection = iObject.Intersection(rayOrigin, rayDirection, out var normal);
                     if (!(intersection.X > 0) || !(intersection.X < minIt)) continue;
 
                     if ((from otherObject in objects
                             where otherObject != iObject
                             select otherObject.Intersection(
-                                Coordinates, cameraRay, out _)).Any(shadowIntersection =>
+                                rayOrigin, rayDirection, out _)).Any(shadowIntersection =>
                             shadowIntersection.X > 0 && shadowIntersection.X < intersection.X))
                         _buffer[i + j * Size.wight] = ' ';
                     else {
@@ -92,7 +95,12 @@ public abstract class Camera {
                     }
 
                     minIt = intersection.X;
+                    if (minIt < 99999) {
+                        rayOrigin += rayDirection * (new Vector3(minIt) - new Vector3(.01));
+                        rayDirection = rayDirection.Reflect(normal);
+                    }
                 }
+
             });
         });
             

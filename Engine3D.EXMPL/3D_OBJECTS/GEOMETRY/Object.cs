@@ -69,22 +69,29 @@ public abstract class Object {
     public List<Object> CollisionObjects(IEnumerable<Object> objects, double minDistance) =>
         objects.Where(currentObject => currentObject != this).Where(currentObject => 
             Collision(this, currentObject, minDistance)).ToList();
+
+    /// <summary>
+    /// Get distance with another object
+    /// </summary>
+    /// <param name="obj"> Another object </param>
+    /// <returns></returns>
+    public double Distance(Object obj) {
+        var firstCenter = new Vector3(Position.X + Size.X / 2, Position.Y + Size.Y / 2, Position.Z + Size.Z / 2);
+        var secondCenter = new Vector3(obj.GetPosition().X + obj.GetSize().X / 2, 
+            obj.GetPosition().Y + obj.GetSize().Y / 2, obj.GetPosition().Z + obj.GetSize().Z / 2);
     
+       return (float)Math.Sqrt(Math.Pow(firstCenter.X - secondCenter.X, 2) + Math.Pow(firstCenter.Y - secondCenter.Y, 2) 
+            + Math.Pow(firstCenter.Z - secondCenter.Z, 2));
+    }
+
     /// <summary>
     /// Get collision status of objects
     /// </summary>
     /// <param name="firstObject"> First object </param>
     /// <param name="secondObject"> Second object </param>
+    /// <param name="minDistance"> Min distance between objects </param>
     /// <returns></returns>
     private static bool Collision(Object firstObject, Object secondObject, double minDistance) {
-        var firstCenter = new Vector3(firstObject.GetPosition().X + firstObject.GetSize().X / 2, 
-            firstObject.GetPosition().Y + firstObject.GetSize().Y / 2, firstObject.GetPosition().Z + firstObject.GetSize().Z / 2);
-        var secondCenter = new Vector3(secondObject.GetPosition().X + secondObject.GetSize().X / 2, 
-            secondObject.GetPosition().Y + secondObject.GetSize().Y / 2, secondObject.GetPosition().Z + secondObject.GetSize().Z / 2);
-    
-        var distance = (float)Math.Sqrt(Math.Pow(firstCenter.X - secondCenter.X, 2) + Math.Pow(firstCenter.Y - secondCenter.Y, 2) 
-            + Math.Pow(firstCenter.Z - secondCenter.Z, 2));
-        
-        return distance <= minDistance;
+        return firstObject.Distance(secondObject) <= minDistance;
     }
 }
