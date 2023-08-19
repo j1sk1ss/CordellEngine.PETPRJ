@@ -1,4 +1,5 @@
-﻿using Engine3D.EXMPL.OBJECTS;
+﻿using System;
+using Engine3D.EXMPL.OBJECTS;
 
 namespace Engine3D.EXMPL.ENGINE_OBJECTS.CAMERA.COLOR;
 
@@ -12,8 +13,7 @@ public class ColorCamera : Camera {
             Console.ResetColor();
         
         for (var i = 0; i < buffer.Length; i++) {
-            if (buffer[i] != ' ')
-                Console.ForegroundColor = colorBuffer[i];
+            if (buffer[i] != ' ') Console.ForegroundColor = colorBuffer[i];
             
             Console.Write(buffer[i]);
         }

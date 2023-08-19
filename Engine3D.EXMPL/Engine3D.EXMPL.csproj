@@ -4,7 +4,21 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageId>CordellEngine</PackageId>
+        <Title>Cordell Engine</Title>
+        <Authors>j1sk1ss</Authors>
+        <Description>Simple library for working and understanding raycasting and 3D</Description>
+        <PackageIcon>Asset_1_1x.png</PackageIcon>
+        <RepositoryUrl>https://github.com/j1sk1ss/CordellEngine.EXMPL</RepositoryUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Update="Asset_1_1x.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
 
 </Project>

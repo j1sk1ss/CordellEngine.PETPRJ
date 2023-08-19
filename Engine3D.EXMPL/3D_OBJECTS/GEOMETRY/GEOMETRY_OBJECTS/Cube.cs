@@ -1,4 +1,5 @@
-﻿using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
+﻿using System;
+using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
 using Engine3D.EXMPL.OBJECTS;
 
 namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.GEOMETRY_OBJECTS;
@@ -19,7 +20,7 @@ public class Cube : Object {
     }
 
     public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
-        rayOrigin -= Position;
+        var origin = rayOrigin - Position;
 
         var minVector = Position;
         var maxVector = new Vector3(Position.X + Size.X, Position.Y + Size.Y, Position.Z + Size.Z);
@@ -28,8 +29,8 @@ public class Cube : Object {
             maxVector = Position;
         }
         
-        var tMin = (minVector - rayOrigin) / rayDirection;
-        var tMax = (maxVector - rayOrigin) / rayDirection;
+        var tMin = (minVector - origin) / rayDirection;
+        var tMax = (maxVector - origin) / rayDirection;
         
         var tNear = Vector3.Min(tMin, tMax);
         var tFar = Vector3.Max(tMin, tMax);
@@ -38,7 +39,7 @@ public class Cube : Object {
         var tFarMin = Math.Min(Math.Min(tFar.X, tFar.Y), tFar.Z);
         if (tNearMax > tFarMin || tFarMin < .0d) {
             intersectionNormal = new Vector3(0);
-            return new Vector2(-1d);
+            return new Vector2(0d);
         }
 
         var yzxOrder = new Vector3(tNear.Y, tNear.Z, tNear.X);

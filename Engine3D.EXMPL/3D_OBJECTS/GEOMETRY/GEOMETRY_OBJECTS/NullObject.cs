@@ -17,6 +17,6 @@ public class NullObject : Object{
 
     public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         intersectionNormal = new Vector3(0);
-        return new Vector2(-1);
+        return new Vector2(0);
     }
 }

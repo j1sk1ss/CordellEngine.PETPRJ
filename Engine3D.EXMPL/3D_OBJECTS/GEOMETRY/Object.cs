@@ -1,4 +1,7 @@
-﻿using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
 using Engine3D.EXMPL.OBJECTS;
 
 namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY;
@@ -13,7 +16,7 @@ public abstract class Object {
 
     protected string Name { get; init; }
     protected Vector3 Position { get; set; }
-    protected Vector3 Size { get; init; }
+    protected Vector3 Size { get; set; }
     protected Material Material { get; init; }
 
     /// <summary>
@@ -62,10 +65,17 @@ public abstract class Object {
     public Vector3 GetSize() => Size;
 
     /// <summary>
+    /// Set size of object
+    /// </summary>
+    /// <param name="size"> New size </param>
+    public void SetSize(Vector3 size) => Size = size;
+
+    /// <summary>
     /// Get collisions between objects
     /// </summary>
     /// <param name="objects"> List of objects on scene </param>
-    /// <returns></returns>
+    /// <param name="minDistance"> Min distance between objects </param>
+    /// <returns> Collided objects </returns>
     public List<Object> CollisionObjects(IEnumerable<Object> objects, double minDistance) =>
         objects.Where(currentObject => currentObject != this).Where(currentObject => 
             Collision(this, currentObject, minDistance)).ToList();
@@ -74,7 +84,7 @@ public abstract class Object {
     /// Get distance with another object
     /// </summary>
     /// <param name="obj"> Another object </param>
-    /// <returns></returns>
+    /// <returns> Distance between two objects </returns>
     public double Distance(Object obj) {
         var firstCenter = new Vector3(Position.X + Size.X / 2, Position.Y + Size.Y / 2, Position.Z + Size.Z / 2);
         var secondCenter = new Vector3(obj.GetPosition().X + obj.GetSize().X / 2, 
@@ -90,7 +100,7 @@ public abstract class Object {
     /// <param name="firstObject"> First object </param>
     /// <param name="secondObject"> Second object </param>
     /// <param name="minDistance"> Min distance between objects </param>
-    /// <returns></returns>
+    /// <returns> Collision object </returns>
     private static bool Collision(Object firstObject, Object secondObject, double minDistance) {
         return firstObject.Distance(secondObject) <= minDistance;
     }

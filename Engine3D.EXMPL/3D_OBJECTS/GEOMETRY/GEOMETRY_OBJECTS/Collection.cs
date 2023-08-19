@@ -1,4 +1,5 @@
-﻿using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
+﻿using System.Collections.Generic;
+using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
 using Engine3D.EXMPL.OBJECTS;
 
 namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.GEOMETRY_OBJECTS;
@@ -32,7 +33,7 @@ public class Collection : Object {
             vector += obj.Intersection(rayOrigin + Position, rayDirection, out var currentNormal);
             normal += currentNormal;
         }
-
+        
         intersectionNormal = normal;
         return vector;
     }

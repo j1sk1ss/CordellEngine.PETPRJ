@@ -1,3 +1,4 @@
+using System;
 using Engine3D.EXMPL.SCRIPTS;
 
 namespace Engine3D.EXMPL.OBJECTS;
@@ -42,7 +43,7 @@ public class Vector3 {
         Length = Math.Sqrt(X * X + Y * Y + Z * Z);
     }
     
-    public double X { get; private set; }
+    public double X { get; set; }
     public double Y { get; private set; }
     public double Z { get; private set; }
     public double Length { get; set; }
@@ -170,4 +171,26 @@ public class Vector3 {
     /// <returns> New vector3 with min values in each parameter </returns>
     public static Vector3 Min(Vector3 firstVector, Vector3 secondVector) =>
         new Vector3(Math.Min(firstVector.X, secondVector.X), Math.Min(firstVector.Y, secondVector.Y), Math.Min(firstVector.Z, secondVector.Z));
+    
+    /// <summary>
+    /// Crossing with vector3
+    /// </summary>
+    /// <param name="b"> Another vector3 </param>
+    /// <returns> Point of crosing </returns>
+    public Vector3 Cross(Vector3 b) {
+        var x = Y * b.Z - Z * b.Y;
+        var y = Z * b.X - X * b.Z;
+        var z = X * b.Y - Y * b.X;
+        
+        return new Vector3(x, y, z);
+    }
+
+    /// <summary>
+    /// Get distance between two dots in space
+    /// </summary>
+    /// <param name="second"> Second position </param>
+    /// <returns></returns>
+    public double Distance(Vector3 second) => 
+        Math.Sqrt(Math.Pow(second.X - X, 2) + Math.Pow(second.Y - Y, 2) + Math.Pow(second.Z - Z, 2));
+    
 }
