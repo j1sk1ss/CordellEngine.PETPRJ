@@ -29,6 +29,7 @@ Simple library for implementing 3D graphics anywhere
 
 -----------------------------------
 <h1 align="center"> Color functionality </h1>
+
 Every object ob scene have **MATERIAL** parametr with next constructors:
 
     public Material(string gradient) {
@@ -54,6 +55,7 @@ Don`t foget to use **COLOR CAMERA** instead **CHROME CAMERA**
 
 -----------------------------------
 <h1 align="center"> Collisions, spawning and deleting </h1>
+
 U also can **SPAWN**, **DELETE** and check **COLLISIONS** of objects in space. For example next code:
 
     public static void Main() {
@@ -90,6 +92,7 @@ Will return next scene:
 
 -----------------------------------
 <h1 align="center"> Collections </h1>
+
 U can unite objects into collections and work with them. First for this u should create collection and add some objects:
 
       var space = new Space(new ChromeCamera(new Vector3(-4,0,0), new Vector3(0)), 
@@ -119,6 +122,7 @@ And next code will return next scene:
 
 -----------------------------------
 <h1 align="center"> Lines </h1>
+
 But if u dont want to use preset objects like **SPHERE** or **CUBE** with **PLANE**, u can create ur own object with **LINES** united into **COLLECTION**. Next code will return next scene:
 
       public static void Main() {
