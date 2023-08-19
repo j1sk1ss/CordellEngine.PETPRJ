@@ -19,7 +19,7 @@ public static class MainWindow {
 
         var space = new Space(new ChromeCamera(new Vector3(-4,0,0), new Vector3(0)), 
             new List<Object> {
-                new Collection(new Vector3(0), new Vector3(1), new List<Object> {
+                new Collection(new Vector3(0, 0, 0), new Vector3(1), new List<Object> {
                     new Line(new Vector3(-1.8, -1, 1), new Vector3(-1.8, 1, 1)),
                     new Line(new Vector3(-1.8, -1, 0), new Vector3(-1.8, 1, 0)),
                 
@@ -31,7 +31,46 @@ public static class MainWindow {
                 
                     new Line(new Vector3(0, -1, 0), new Vector3(0, -1, -1)),
                     new Line(new Vector3(0, -3, 0), new Vector3(0, -3, -1)),
-                })
+                }, new Material(ConsoleColor.Blue), "cl1"),
+                new Collection(new Vector3(0, 2, 0), new Vector3(1), new List<Object> {
+                    new Line(new Vector3(-1.8, -1, 1), new Vector3(-1.8, 1, 1)),
+                    new Line(new Vector3(-1.8, -1, 0), new Vector3(-1.8, 1, 0)),
+                
+                    new Line(new Vector3(-1.8, -1, 0), new Vector3(-1.8, -1, -1)),
+                    new Line(new Vector3(-1.8, -3, 0), new Vector3(-1.8, -3, -1)),
+                
+                    new Line(new Vector3(0, -1, 1), new Vector3(0, 1, 1)),
+                    new Line(new Vector3(0, -1, 0), new Vector3(0, 1, 0)),
+                
+                    new Line(new Vector3(0, -1, 0), new Vector3(0, -1, -1)),
+                    new Line(new Vector3(0, -3, 0), new Vector3(0, -3, -1)),
+                }, new Material(ConsoleColor.Yellow), "cl2"),
+                new Collection(new Vector3(0, 2, 0), new Vector3(1), new List<Object> {
+                    new Line(new Vector3(-1.8, -1, 1), new Vector3(-1.8, 1, 1)),
+                    new Line(new Vector3(-1.8, -1, 0), new Vector3(-1.8, 1, 0)),
+                
+                    new Line(new Vector3(-1.8, -1, 0), new Vector3(-1.8, -1, -1)),
+                    new Line(new Vector3(-1.8, -3, 0), new Vector3(-1.8, -3, -1)),
+                
+                    new Line(new Vector3(0, -1, 1), new Vector3(0, 1, 1)),
+                    new Line(new Vector3(0, -1, 0), new Vector3(0, 1, 0)),
+                
+                    new Line(new Vector3(0, -1, 0), new Vector3(0, -1, -1)),
+                    new Line(new Vector3(0, -3, 0), new Vector3(0, -3, -1)),
+                }, new Material(ConsoleColor.Green), "cl3"),
+                new Collection(new Vector3(0, 2, 0), new Vector3(1), new List<Object> {
+                    new Line(new Vector3(-1.8, -1, 1), new Vector3(-1.8, 1, 1)),
+                    new Line(new Vector3(-1.8, -1, 0), new Vector3(-1.8, 1, 0)),
+                
+                    new Line(new Vector3(-1.8, -1, 0), new Vector3(-1.8, -1, -1)),
+                    new Line(new Vector3(-1.8, -3, 0), new Vector3(-1.8, -3, -1)),
+                
+                    new Line(new Vector3(0, -1, 1), new Vector3(0, 1, 1)),
+                    new Line(new Vector3(0, -1, 0), new Vector3(0, 1, 0)),
+                
+                    new Line(new Vector3(0, -1, 0), new Vector3(0, -1, -1)),
+                    new Line(new Vector3(0, -3, 0), new Vector3(0, -3, -1)),
+                }, new Material(ConsoleColor.Red), "cl4"),
             });
 
         var t = 0;
@@ -39,7 +78,10 @@ public static class MainWindow {
             t++;
             space.GetView();
             
-            space.GetObject("collection1").SetPosition(new Vector3(Math.Cos(t * .01), -Math.Cos(t * .01), Math.Sin(t * .01)));
+            space.GetObject("cl1").SetPosition(new Vector3(Math.Cos(t * .01), -Math.Cos(t * .01), Math.Sin(t * .01)));
+            space.GetObject("cl2").SetPosition(new Vector3(Math.Cos(t * .01), -Math.Cos(t * .01) - 2, Math.Sin(t * .01)));
+            space.GetObject("cl3").SetPosition(new Vector3(Math.Cos(t * .01), -Math.Cos(t * .01) - 2, Math.Sin(t * .01) + 1));
+            space.GetObject("cl4").SetPosition(new Vector3(Math.Cos(t * .01), -Math.Cos(t * .01), Math.Sin(t * .01) + 1));
         }
     }
 }
