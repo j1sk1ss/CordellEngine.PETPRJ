@@ -158,4 +158,35 @@ But if u dont want to use preset objects like **SPHERE** or **CUBE** with **PLAN
   <img width="800" height="480" src="https://github.com/j1sk1ss/SharpEngine.EXMPL/blob/master/Eight.gif">
 </p>
 
+      public static void Main() {
+              Console.CursorVisible = false;
+      
+              var space = new Space(new ChromeCamera(new Vector3(-4,0,0), new Vector3(0)), 
+                  new List<Object> {
+                      new Collection(new Vector3(0, 0, 0), new Vector3(1), new List<Object> {
+                          new Line(new Vector3(0,0,1), new Vector3(1,1,0)),
+                          new Line(new Vector3(0,0,1), new Vector3(1,-1,0)),
+                          new Line(new Vector3(0,0,1), new Vector3(-1,1,0)),
+                          new Line(new Vector3(0,0,1), new Vector3(-1,-1,0)),
+                          
+                          new Line(new Vector3(1,1,2),  new Vector3(1,3,2)),
+                          new Line(new Vector3(1,1,2),  new Vector3(3,1,2)),
+                          new Line(new Vector3(-1,1,2),  new Vector3(-1,3,2)),
+                          new Line(new Vector3(1,-1,2), new Vector3(3,-1,2)),
+                      }),
+                  });
+      
+              var t = 0;
+              while (true) {
+                  t++;
+                  space.GetView();
+                  
+                  space.GetObject("collection1").SetPosition(new Vector3(Math.Cos(t * .01), -Math.Cos(t * .01), Math.Sin(t * .01) + 1));
+              }
+          }
+
+<p align="center">
+  <img width="800" height="480" src="https://github.com/j1sk1ss/SharpEngine.EXMPL/blob/master/Nine.gif">
+</p>
+
 -----------------------------------
