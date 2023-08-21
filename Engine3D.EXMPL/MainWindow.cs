@@ -1,4 +1,5 @@
 ﻿using Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.GEOMETRY_OBJECTS;
+using Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.LIGHT_OBJECTS;
 using Engine3D.EXMPL.ENGINE_OBJECTS;
 using Engine3D.EXMPL.ENGINE_OBJECTS.CAMERA.CHROME_CAMERA;
 using Engine3D.EXMPL.OBJECTS;
@@ -13,7 +14,27 @@ public static class MainWindow {
         var space = new Space(new ChromeCamera(new Vector3(-4,0,0), new Vector3(0), 20), 
             new List<Object> {
                 new Collection(new Vector3(0), new Vector3(0), new List<Object> {
-                    new Cube(new Vector3(0), new Vector3(1))
+                    new Polygon(new [] {
+                        new Vector3(0,-1,-1),
+                        new Vector3(0,1,-1),
+                        new Vector3(0,1,1),
+                    }),
+                    new Polygon(new [] {
+                        new Vector3(0,-1,-1),
+                        new Vector3(0,-1,1),
+                        new Vector3(0,1,1),
+                    }),
+                    
+                    new Polygon(new [] {
+                        new Vector3(1,-1,-1),
+                        new Vector3(0,-1,-1),
+                        new Vector3(1,-1,1),
+                    }),
+                    new Polygon(new [] {
+                        new Vector3(0,-1,-1),
+                        new Vector3(0,-1,1),
+                        new Vector3(6,-1,1),
+                    }),
                 })
             });
 
@@ -21,6 +42,8 @@ public static class MainWindow {
         while (true) {
             t++;
             space.GetView();
+            
+            space.GetObject("collection1").Rotate(new Vector3(0, .01, .01));
         }
     }
 }

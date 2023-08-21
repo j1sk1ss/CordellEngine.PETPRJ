@@ -45,8 +45,8 @@ public class Polygon : Object {
         }
 
         var t = f * e2.Dot(q);
-        if (t > float.Epsilon){
-            intersectionNormal = new Vector3(1); 
+        if (t > float.Epsilon) {
+            intersectionNormal = e1.Cross(e2).Normalize();
             return new Vector2(1); 
         }
         
@@ -55,7 +55,7 @@ public class Polygon : Object {
     }
     
     public override void Rotate(Vector3 angle) {
-        foreach (var point in Points)
-            point.Rotate(angle);
+        for (var i = 0; i < Points.Length; i++)
+            Points[i] = Points[i].Rotate(angle);
     }
 }

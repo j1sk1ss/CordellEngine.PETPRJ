@@ -106,12 +106,12 @@ public class Vector3 {
     /// </summary>
     /// <param name="angle"> Angle </param>
     /// <returns> Rotated vector3 </returns>
-    public Vector3 RotateX(double angle) {
-        var tempVector = this;
-        tempVector.Z = Z * Math.Cos(angle) - Y * Math.Sin(angle);
-        tempVector.Y = Z * Math.Sin(angle) + Y * Math.Cos(angle);
+    public void RotateX(double angle) {
+        var z = Z * Math.Cos(angle) - Y * Math.Sin(angle);
+        var y = Z * Math.Sin(angle) + Y * Math.Cos(angle);
 
-        return tempVector;
+        Z = z;
+        Y = y;
     }
 
     /// <summary>
@@ -119,12 +119,12 @@ public class Vector3 {
     /// </summary>
     /// <param name="angle"> Angle </param>
     /// <returns> Rotated vector3 </returns>
-    public Vector3 RotateY(double angle) {
-        var tempVector = this;
-        tempVector.X = X * Math.Cos(angle) - Z * Math.Sin(angle);
-        tempVector.Z = X * Math.Sin(angle) + Z * Math.Cos(angle);
+    public void RotateY(double angle) {
+        var x = X * Math.Cos(angle) - Z * Math.Sin(angle);
+        var z = X * Math.Sin(angle) + Z * Math.Cos(angle);
 
-        return tempVector;
+        X = x;
+        Z = z;
     }
     
     /// <summary>
@@ -132,12 +132,12 @@ public class Vector3 {
     /// </summary>
     /// <param name="angle"> Angle </param>
     /// <returns> Rotated vector3 </returns>
-    public Vector3 RotateZ(double angle) {
-        var tempVector = this;
-        tempVector.X = X * Math.Cos(angle) - Y * Math.Sin(angle);
-        tempVector.Y = X * Math.Sin(angle) + Y * Math.Cos(angle);
+    public void RotateZ(double angle) {
+        var x = X * Math.Cos(angle) - Y * Math.Sin(angle);
+        var y = X * Math.Sin(angle) + Y * Math.Cos(angle);
 
-        return tempVector;
+        X = x;
+        Y = y;
     }
 
     /// <summary>
