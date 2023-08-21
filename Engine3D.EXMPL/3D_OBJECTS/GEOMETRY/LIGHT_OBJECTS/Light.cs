@@ -16,7 +16,7 @@ public class Light : Object {
         Name     = name;
     }
     
-    private double Strength { get; set; }
+    private double Strength { get; }
 
     public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         intersectionNormal = new Vector3(0);
@@ -24,4 +24,8 @@ public class Light : Object {
     }
 
     public double GetStrength() => Strength;
+
+    public override void Rotate(Vector3 angle) {
+        Position.Rotate(angle);
+    }
 }

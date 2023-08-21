@@ -15,12 +15,14 @@ public abstract class Camera {
     /// </summary>
     /// <param name="coordinates"> Camera coordinates </param>
     /// <param name="angles"> Camera angles </param>
+    /// <param name="viewDistance"> Distance of camera view </param>
     /// <param name="cameraX"> X camera size </param>
     /// <param name="cameraY"> Y camera size </param>
-    protected Camera(Vector3 coordinates, Vector3 angles, int cameraX = 120, int cameraY = 30) {
-        Coordinates = coordinates;
-        Angles      = angles;
-        Size        = (cameraX, cameraY);
+    protected Camera(Vector3 coordinates, Vector3 angles, double viewDistance = 20, int cameraX = 120, int cameraY = 30) {
+        Coordinates  = coordinates;
+        Angles       = angles;
+        Size         = (cameraX, cameraY);
+        ViewDistance = viewDistance;
         
         Console.SetWindowSize(Size.wight, Size.height);
         Console.SetBufferSize(Size.wight, Size.height);
@@ -29,6 +31,7 @@ public abstract class Camera {
 
     public Vector3 Coordinates { get; set; }
     public Vector3 Angles { get; set; }
+    public double ViewDistance { get; set; }
     private static (int wight, int height) Size { get; set; }
 
     /// <summary>
@@ -67,7 +70,8 @@ public abstract class Camera {
                                 buffer[i + j * Size.wight] = iObject.GetMaterial().GetGradient()[
                                     (int)MathScripts.Clamp(
                                         iObject.GetMaterial().GetGradient().IndexOf(buffer[i + j * Size.wight]) +
-                                        (int)(normal.Dot(light.GetPosition().Normalize()) * 20 * light.GetStrength()),
+                                        (int)(normal.Dot(light.GetPosition().Normalize()) * (ViewDistance - Math.Max(0, ViewDistance - iObject.GetPosition().Distance(Coordinates))) 
+                                            * light.GetStrength()),
                                         0, iObject.GetMaterial().GetGradient().Length - 2)];
                         else buffer[i + j * Size.wight] = '@';
                     }

@@ -1,4 +1,3 @@
-using System;
 using Engine3D.EXMPL.SCRIPTS;
 
 namespace Engine3D.EXMPL.OBJECTS;
@@ -161,7 +160,7 @@ public class Vector3 {
     /// <param name="secondVector"> Second vector3 </param>
     /// <returns> New vector3 with max values in each parameter </returns>
     public static Vector3 Max(Vector3 firstVector, Vector3 secondVector) =>
-        new Vector3(Math.Max(firstVector.X, secondVector.X), Math.Max(firstVector.Y, secondVector.Y), Math.Max(firstVector.Z, secondVector.Z));
+        new(Math.Max(firstVector.X, secondVector.X), Math.Max(firstVector.Y, secondVector.Y), Math.Max(firstVector.Z, secondVector.Z));
     
     /// <summary>
     /// Min of two vector3
@@ -170,7 +169,7 @@ public class Vector3 {
     /// <param name="secondVector"> Second vector3 </param>
     /// <returns> New vector3 with min values in each parameter </returns>
     public static Vector3 Min(Vector3 firstVector, Vector3 secondVector) =>
-        new Vector3(Math.Min(firstVector.X, secondVector.X), Math.Min(firstVector.Y, secondVector.Y), Math.Min(firstVector.Z, secondVector.Z));
+        new(Math.Min(firstVector.X, secondVector.X), Math.Min(firstVector.Y, secondVector.Y), Math.Min(firstVector.Z, secondVector.Z));
     
     /// <summary>
     /// Crossing with vector3

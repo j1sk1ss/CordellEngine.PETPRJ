@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
+﻿using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
 using Engine3D.EXMPL.OBJECTS;
 
 namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY;
@@ -101,7 +98,12 @@ public abstract class Object {
     /// <param name="secondObject"> Second object </param>
     /// <param name="minDistance"> Min distance between objects </param>
     /// <returns> Collision object </returns>
-    private static bool Collision(Object firstObject, Object secondObject, double minDistance) {
-        return firstObject.Distance(secondObject) <= minDistance;
-    }
+    private static bool Collision(Object firstObject, Object secondObject, double minDistance) =>
+        firstObject.Distance(secondObject) <= minDistance;
+
+    /// <summary>
+    /// Rotate object
+    /// </summary>
+    /// <param name="angle"> Angle of Rotation </param>
+    public abstract void Rotate(Vector3 angle);
 }

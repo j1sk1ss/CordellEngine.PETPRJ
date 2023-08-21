@@ -1,5 +1,4 @@
-﻿using System;
-using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
+﻿using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
 using Engine3D.EXMPL.OBJECTS;
 
 namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.GEOMETRY_OBJECTS;
@@ -47,5 +46,10 @@ public class Cube : Object {
 
         intersectionNormal = -rayDirection.Sign() * yzxOrder.Step(tNear) * zxyOrder.Step(tNear);
         return new Vector2(tNearMax, tFarMin);
+    }
+
+    public override void Rotate(Vector3 angle) {
+        Position.Rotate(angle);
+        Size.Rotate(angle);
     }
 }

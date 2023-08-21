@@ -1,5 +1,4 @@
-﻿using System;
-using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
+﻿using Engine3D.EXMPL._3D_OBJECTS.MATERIALS;
 using Engine3D.EXMPL.OBJECTS;
 
 namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.GEOMETRY_OBJECTS;
@@ -36,4 +35,6 @@ public class Sphere : Object {
         
         return intersection;
     }
+    
+    public override void Rotate(Vector3 angle) { }
 }

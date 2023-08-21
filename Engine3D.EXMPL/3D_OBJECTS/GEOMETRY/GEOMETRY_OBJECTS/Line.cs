@@ -13,7 +13,7 @@ public class Line : Object {
         Thickness = thickness;
     }
     
-    private double Thickness { get; set; }
+    private double Thickness { get; }
     
     public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         var segmentDirection = Size - Position;
@@ -35,5 +35,10 @@ public class Line : Object {
 
         intersectionNormal = new Vector3(0);
         return new Vector2(0);
+    }
+
+    public override void Rotate(Vector3 angle) {
+        Position.Rotate(angle);
+        Size.Rotate(angle);
     }
 }
