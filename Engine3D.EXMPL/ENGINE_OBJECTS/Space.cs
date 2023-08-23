@@ -9,6 +9,14 @@ public class Space {
     /// <summary>
     /// Space
     /// </summary>
+    public Space() {
+        Camera = null!;
+        Objects = new List<Object>();
+    }
+    
+    /// <summary>
+    /// Space
+    /// </summary>
     /// <param name="camera"> Camera </param>
     public Space(Camera camera) {
         Camera  = camera;
@@ -32,7 +40,7 @@ public class Space {
     /// Get camera view in space
     /// </summary>
     /// <returns> Camera view in console and char array of this view </returns>
-    public (char[], ConsoleColor[]) GetView() => Camera.GetView(Objects);
+    public (char[,], ConsoleColor[,]) GetView() => Camera.GetView(Objects);
 
     /// <summary>
     /// Get camera

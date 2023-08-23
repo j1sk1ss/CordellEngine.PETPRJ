@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.LIGHT_OBJECTS;
+﻿using Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.LIGHT_OBJECTS;
 using Engine3D.EXMPL.OBJECTS;
 using Engine3D.EXMPL.SCRIPTS;
 using Object = Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.Object;
@@ -18,20 +14,25 @@ public abstract class Camera {
     /// <param name="viewDistance"> Distance of camera view </param>
     /// <param name="cameraX"> X camera size </param>
     /// <param name="cameraY"> Y camera size </param>
-    protected Camera(Vector3 coordinates, Vector3 angles, double viewDistance = 20, int cameraX = 120, int cameraY = 30) {
+    protected Camera(Vector3 coordinates, Vector3 angles, bool isConsole = true, double viewDistance = 20, int cameraX = 120, int cameraY = 30) {
         Coordinates  = coordinates;
         Angles       = angles;
         Size         = (cameraX, cameraY);
         ViewDistance = viewDistance;
+
+        IsConsole = isConsole;
         
+        if (!isConsole) return;
         Console.SetWindowSize(Size.wight, Size.height);
         Console.SetBufferSize(Size.wight, Size.height);
         Console.SetCursorPosition(0, 0);
     }
 
-    public Vector3 Coordinates { get; set; }
-    public Vector3 Angles { get; set; }
-    public double ViewDistance { get; set; }
+    private bool IsConsole { get; }
+    
+    public Vector3 Coordinates { get; }
+    public Vector3 Angles { get; }
+    public double ViewDistance { get; }
     private static (int wight, int height) Size { get; set; }
 
     /// <summary>
@@ -39,10 +40,10 @@ public abstract class Camera {
     /// </summary> 
     /// <param name="objects"> Objects on scene </param>
     /// <returns> Char array </returns>
-    public (char[], ConsoleColor[]) GetView(List<Object> objects) {
+    public (char[,], ConsoleColor[,]) GetView(List<Object> objects) {
         var lights = objects.Where(iObject => iObject.GetType() == typeof(Light)).ToList();
-        var buffer = new char[Size.wight * Size.height];
-        var colorBuffer = new ConsoleColor[Size.wight * Size.height];
+        var buffer = new char[Size.height, Size.wight];
+        var colorBuffer = new ConsoleColor[Size.height, Size.wight];
 
         Parallel.For(0, Size.wight, i => {
             Parallel.For(0, Size.height, j => {
@@ -62,18 +63,18 @@ public abstract class Camera {
                     if ((from otherObject in objects where otherObject != iObject select otherObject.Intersection(
                                 rayOrigin, rayDirection, out _)).Any(shadowIntersection =>
                             shadowIntersection.X > 0 && shadowIntersection.X < intersection.X))
-                        buffer[i + j * Size.wight] = ' ';
+                        buffer[j, i] = ' ';
                     else {
-                        colorBuffer[i + j * Size.wight] = iObject.GetMaterial().GetGColor();
+                        colorBuffer[j, i] = iObject.GetMaterial().GetGColor();
                         if (lights.Count > 0)
                             foreach (var light in lights.Cast<Light>())
-                                buffer[i + j * Size.wight] = iObject.GetMaterial().GetGradient()[
+                                buffer[j, i] = iObject.GetMaterial().GetGradient()[
                                     (int)MathScripts.Clamp(
-                                        iObject.GetMaterial().GetGradient().IndexOf(buffer[i + j * Size.wight]) +
+                                        iObject.GetMaterial().GetGradient().IndexOf(buffer[j, i]) +
                                         (int)(normal.Dot(light.GetPosition().Normalize()) * (ViewDistance - Math.Max(0, ViewDistance - iObject.GetPosition().Distance(Coordinates))) 
                                             * light.GetStrength()),
                                         0, iObject.GetMaterial().GetGradient().Length - 2)];
-                        else buffer[i + j * Size.wight] = '@';
+                        else buffer[j, i] = '@';
                     }
 
                     minIt = intersection.X;
@@ -85,10 +86,11 @@ public abstract class Camera {
             });
         });
             
-        GetConsoleView(buffer, colorBuffer);
+        if (IsConsole)
+            GetConsoleView(buffer, colorBuffer);
         
         return (buffer, colorBuffer);
     }
 
-    protected abstract void GetConsoleView(char[] buffer, ConsoleColor[] colorBuffer);
+    protected abstract void GetConsoleView(char[,] buffer, ConsoleColor[,] colorBuffer);
 }
