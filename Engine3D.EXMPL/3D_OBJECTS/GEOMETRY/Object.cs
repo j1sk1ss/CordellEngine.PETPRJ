@@ -4,6 +4,13 @@ using Engine3D.EXMPL.OBJECTS;
 namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY;
 
 public abstract class Object {
+    /// <summary>
+    /// Object
+    /// </summary>
+    /// <param name="position"> Position of object </param>
+    /// <param name="size"> Size of object </param>
+    /// <param name="material"> Material of object </param>
+    /// <param name="name"> Name of object </param>
     protected Object(Vector3 position, Vector3 size, Material material, string name) {
         Name     = name;
         Position = position;

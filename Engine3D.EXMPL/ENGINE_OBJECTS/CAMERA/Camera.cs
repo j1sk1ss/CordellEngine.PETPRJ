@@ -11,6 +11,7 @@ public abstract class Camera {
     /// </summary>
     /// <param name="coordinates"> Camera coordinates </param>
     /// <param name="angles"> Camera angles </param>
+    /// <param name="isConsole"> Is this console </param>
     /// <param name="viewDistance"> Distance of camera view </param>
     /// <param name="cameraX"> X camera size </param>
     /// <param name="cameraY"> Y camera size </param>
@@ -56,24 +57,24 @@ public abstract class Camera {
                 var rayOrigin = Coordinates;
                 var rayDirection = cameraRay;
                 
-                foreach (var iObject in objects) {
+                foreach (var iObject in objects.Where(iObject => !lights.Contains(iObject))) {
                     var intersection = iObject.Intersection(rayOrigin, rayDirection, out var normal);
                     if (!(intersection.X > 0) || !(intersection.X < minIt)) continue;
 
                     if ((from otherObject in objects where otherObject != iObject select otherObject.Intersection(
-                                rayOrigin, rayDirection, out _)).Any(shadowIntersection =>
+                            rayOrigin, rayDirection, out _)).Any(shadowIntersection =>
                             shadowIntersection.X > 0 && shadowIntersection.X < intersection.X))
                         buffer[j, i] = ' ';
                     else {
                         colorBuffer[j, i] = iObject.GetMaterial().GetGColor();
+                        
                         if (lights.Count > 0)
                             foreach (var light in lights.Cast<Light>())
-                                buffer[j, i] = iObject.GetMaterial().GetGradient()[
-                                    (int)MathScripts.Clamp(
-                                        iObject.GetMaterial().GetGradient().IndexOf(buffer[j, i]) +
-                                        (int)(normal.Dot(light.GetPosition().Normalize()) * (ViewDistance - Math.Max(0, ViewDistance - iObject.GetPosition().Distance(Coordinates))) 
-                                            * light.GetStrength()),
-                                        0, iObject.GetMaterial().GetGradient().Length - 2)];
+                                buffer[j, i] = iObject.GetMaterial().GetGradient()[(int)MathScripts.Clamp(
+                                    iObject.GetMaterial().GetGradient().IndexOf(buffer[j, i]) + (int)(normal.Dot(
+                                        light.GetPosition().Normalize()) * (ViewDistance - Math.Max(
+                                        0, ViewDistance - normal.Distance(Coordinates))) * light.GetStrength()), 0, 
+                                    iObject.GetMaterial().GetGradient().Length - 2)];
                         else buffer[j, i] = '@';
                     }
 
@@ -92,5 +93,10 @@ public abstract class Camera {
         return (buffer, colorBuffer);
     }
 
+    /// <summary>
+    /// Get console view
+    /// </summary>
+    /// <param name="buffer"> Console buffer </param>
+    /// <param name="colorBuffer"> Color buffer </param>
     protected abstract void GetConsoleView(char[,] buffer, ConsoleColor[,] colorBuffer);
 }

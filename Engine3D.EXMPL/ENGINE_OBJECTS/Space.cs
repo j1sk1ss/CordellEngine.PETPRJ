@@ -10,7 +10,7 @@ public class Space {
     /// Space
     /// </summary>
     public Space() {
-        Camera = null!;
+        Camera  = null!;
         Objects = new List<Object>();
     }
     
@@ -34,7 +34,7 @@ public class Space {
     }
 
     private Camera Camera { get; set; }
-    public List<Object> Objects { get; set; }
+    private List<Object> Objects { get; set; }
 
     /// <summary>
     /// Get camera view in space
@@ -67,11 +67,9 @@ public class Space {
     /// </summary>
     /// <param name="name"> Object name </param>
     public void DeleteObject(string name) {
-        foreach (var currentObject in Objects) {
-            if (currentObject.GetName() == name) {
-                Objects.Remove(currentObject);
-                break;
-            }
+        foreach (var currentObject in Objects.Where(currentObject => currentObject.GetName() == name)) {
+            Objects.Remove(currentObject);
+            break;
         }
     }
 }

@@ -10,7 +10,8 @@ public class Light : Object {
     /// <param name="position"> Light position </param>
     /// <param name="strength"> Strength of light </param>
     /// <param name="name"> Light name </param>
-    public Light(Vector3 position, double strength, string name = "light1")  : base(position, new Vector3(0), Material.DefaultMaterial, name) {
+    public Light(Vector3 position, double strength, string name = "light1")  
+        : base(position, new Vector3(0), Material.DefaultMaterial, name) {
         Position = position;
         Strength = strength;
         Name     = name;

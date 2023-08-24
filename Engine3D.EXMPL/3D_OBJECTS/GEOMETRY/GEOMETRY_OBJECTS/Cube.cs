@@ -11,7 +11,8 @@ public class Cube : Object {
     /// <param name="size"> Cube size </param>
     /// <param name="material"> Material </param>
     /// <param name="name"> Cube name </param>
-    public Cube(Vector3 position, Vector3 size, Material material = null!, string name = "cube1") : base(position, size, material, name) {
+    public Cube(Vector3 position, Vector3 size, Material material = null!, string name = "cube1") 
+        : base(position, size, material, name) {
         Position = position;
         Size     = size;
         Name     = name;

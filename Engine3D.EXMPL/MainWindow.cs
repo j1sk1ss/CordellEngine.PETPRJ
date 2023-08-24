@@ -14,25 +14,8 @@ public static class MainWindow {
 
         var space = new Space(new ChromeCamera(new Vector3(-4,0,0), new Vector3(0), true, 20), 
             new List<Object> {
-                new Collection(new Vector3(0), new Vector3(0), new List<Object> {
-                    new Polygon(new [] {
-                        new Vector3(0,-1,-1),
-                        new Vector3(0,1,-1),
-                        new Vector3(0,1,1),
-                    }),
-                    new Polygon(new [] {
-                        new Vector3(0,-1,-1),
-                        new Vector3(0,-1,1),
-                        new Vector3(0,1,1),
-                    }),
-                    
-                    new Polygon(new [] {
-                        new Vector3(0,-1,-1),
-                        new Vector3(0,-1,1),
-                        new Vector3(6,-1,1),
-                    }),
-                }),
-                new Light(new Vector3(0, 2, 0), 20)
+                new Sphere(new Vector3(0), new Vector3(1)),
+                new Light(new Vector3(-20, 0, 0), 20)
             });
 
         var t = 0;
@@ -40,7 +23,7 @@ public static class MainWindow {
             t++;
             space.GetView();
             
-            space.GetObject("collection1").Rotate(new Vector3(0, .01, .01));
+            space.GetObject("sphere1").SetPosition(new Vector3(Math.Cos(t * .01) * 2, 0, 0));
         }
     }
 }

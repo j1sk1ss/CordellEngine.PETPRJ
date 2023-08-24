@@ -175,7 +175,7 @@ public class Vector3 {
     /// Crossing with vector3
     /// </summary>
     /// <param name="b"> Another vector3 </param>
-    /// <returns> Point of crosing </returns>
+    /// <returns> Point of crossing </returns>
     public Vector3 Cross(Vector3 b) {
         var x = Y * b.Z - Z * b.Y;
         var y = Z * b.X - X * b.Z;

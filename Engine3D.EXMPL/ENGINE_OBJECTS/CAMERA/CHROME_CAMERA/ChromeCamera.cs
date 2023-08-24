@@ -11,12 +11,10 @@ public class ChromeCamera : Camera {
 
     protected override void GetConsoleView(char[,] buffer, ConsoleColor[,] colorBuffer) {
         var output = new StringBuilder();
-
-        for (var i = 0; i < buffer.GetLength(0); i++) {
+        
+        for (var i = 0; i < buffer.GetLength(0); i++) 
             for (var j = 0; j < buffer.GetLength(1); j++) 
                 output.Append(buffer[i, j]);
-            
-        }
         
         Console.SetCursorPosition(0,0);
         Console.Write(output);

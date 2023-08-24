@@ -46,5 +46,8 @@ public class Material {
     /// <returns> Color </returns>
     public ConsoleColor GetGColor() => ConsoleColor;
 
-    public static Material DefaultMaterial => new (" .:!/r(l1Z4H9W8$@");
+    /// <summary>
+    /// Default material
+    /// </summary>
+    public static Material DefaultMaterial => new (" .:!/r(l1Z4H9W8$@", ConsoleColor.White);
 }

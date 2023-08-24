@@ -11,7 +11,8 @@ public class Sphere : Object {
     /// <param name="radius"> Sphere radius </param>
     /// <param name="material"> Material </param>
     /// <param name="name"> Sphere name </param>
-    public Sphere(Vector3 position, Vector3 radius, Material material = null!, string name = "sphere1") : base(position, radius, material, name) {
+    public Sphere(Vector3 position, Vector3 radius, Material material = null!, string name = "sphere1") 
+        : base(position, radius, material, name) {
         Position = position;
         Size     = radius;
         Name     = name;

@@ -11,7 +11,8 @@ public class Plane : Object {
     /// <param name="high"> Plane high </param>
     /// <param name="material"> Material </param>
     /// <param name="name"> Plane name </param>
-    public Plane(Vector3 position, Vector3 high, Material material = null!, string name = "plane1") : base(position, high, material, name) {
+    public Plane(Vector3 position, Vector3 high, Material material = null!, string name = "plane1") 
+        : base(position, high, material, name) {
         Position = position;
         Size     = high;
         Name     = name;

@@ -4,7 +4,14 @@ using Engine3D.EXMPL.OBJECTS;
 namespace Engine3D.EXMPL._3D_OBJECTS.GEOMETRY.GEOMETRY_OBJECTS;
 
 public class Polygon : Object {
-    public Polygon(Vector3[] points, Material material = null!, string name = "polygon1") : base(points[0], points[2], material, name) {
+    /// <summary>
+    /// Polygon object
+    /// </summary>
+    /// <param name="points"> Array of points of polygon </param>
+    /// <param name="material"> Material of polygon </param>
+    /// <param name="name"> Name of polygon </param>
+    public Polygon(Vector3[] points, Material material = null!, string name = "polygon1") 
+        : base(points[0], points[2], material, name) {
         Position = points[0];
         Size     = points[2];
         Name     = name;
