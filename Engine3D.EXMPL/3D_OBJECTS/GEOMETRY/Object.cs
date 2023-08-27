@@ -54,7 +54,7 @@ public abstract class Object {
     /// Move object
     /// </summary>
     /// <param name="move"> Move vector </param>
-    public void Move(Vector3 move) => Position += move;
+    public virtual void Move(Vector3 move) => Position += move;
 
     /// <summary>
     /// Gets material

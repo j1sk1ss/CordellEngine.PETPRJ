@@ -65,4 +65,9 @@ public class Polygon : Object {
         for (var i = 0; i < Points.Length; i++)
             Points[i] = Points[i].Rotate(angle);
     }
+
+    public override void Move(Vector3 move) {
+        for (var i = 0; i < Points.Length; i++) 
+            Points[i] += move;
+    }
 }

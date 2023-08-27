@@ -11,7 +11,7 @@
         <PackageIcon>Asset_1_1x.png</PackageIcon>
         <RepositoryUrl>https://github.com/j1sk1ss/CordellEngine.EXMPL</RepositoryUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <OutputType>Exe</OutputType>
+        <Version>1.1.0</Version>
     </PropertyGroup>
 
     <ItemGroup>

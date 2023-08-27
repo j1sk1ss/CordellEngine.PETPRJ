@@ -34,13 +34,13 @@ public class Space {
     }
 
     private Camera Camera { get; set; }
-    private List<Object> Objects { get; set; }
+    public List<Object> Objects { get; set; }
 
     /// <summary>
     /// Get camera view in space
     /// </summary>
     /// <returns> Camera view in console and char array of this view </returns>
-    public (char[,], ConsoleColor[,]) GetView() => Camera.GetView(Objects);
+    public (char[,] image, ConsoleColor[,] color, double[,] light) GetView() => Camera.GetView(Objects);
 
     /// <summary>
     /// Get camera

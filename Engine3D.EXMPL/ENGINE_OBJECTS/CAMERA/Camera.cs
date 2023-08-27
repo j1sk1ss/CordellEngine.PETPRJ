@@ -41,10 +41,12 @@ public abstract class Camera {
     /// </summary> 
     /// <param name="objects"> Objects on scene </param>
     /// <returns> Char array </returns>
-    public (char[,], ConsoleColor[,]) GetView(List<Object> objects) {
+    public (char[,] image, ConsoleColor[,] color, double[,] light) GetView(List<Object> objects) {
         var lights = objects.Where(iObject => iObject.GetType() == typeof(Light)).ToList();
+        
         var buffer = new char[Size.height, Size.wight];
         var colorBuffer = new ConsoleColor[Size.height, Size.wight];
+        var lightBuffer = new double[Size.height, Size.wight];
 
         Parallel.For(0, Size.wight, i => {
             Parallel.For(0, Size.height, j => {
@@ -69,13 +71,20 @@ public abstract class Camera {
                         colorBuffer[j, i] = iObject.GetMaterial().GetGColor();
                         
                         if (lights.Count > 0)
-                            foreach (var light in lights.Cast<Light>())
-                                buffer[j, i] = iObject.GetMaterial().GetGradient()[(int)MathScripts.Clamp(
+                            foreach (var light in lights.Cast<Light>()) {
+                                lightBuffer[j, i] = (int)MathScripts.Clamp(
                                     iObject.GetMaterial().GetGradient().IndexOf(buffer[j, i]) + (int)(normal.Dot(
                                         light.GetPosition().Normalize()) * (ViewDistance - Math.Max(
-                                        0, ViewDistance - normal.Distance(Coordinates))) * light.GetStrength()), 0, 
-                                    iObject.GetMaterial().GetGradient().Length - 2)];
-                        else buffer[j, i] = '@';
+                                        0, ViewDistance - normal.Distance(Coordinates))) * light.GetStrength()), 0,
+                                    iObject.GetMaterial().GetGradient().Length - 2);
+                                buffer[j, i] = iObject.GetMaterial().GetGradient()[(int)lightBuffer[j, i]];
+                            }
+                        else {
+                            buffer[j, i] = '@';
+                            lightBuffer[j, i] = -1;
+                        }
+
+                        lightBuffer[j, i] = lightBuffer[j, i] / iObject.GetMaterial().GetGradient().Length - 2;
                     }
 
                     minIt = intersection.X;
@@ -90,7 +99,7 @@ public abstract class Camera {
         if (IsConsole)
             GetConsoleView(buffer, colorBuffer);
         
-        return (buffer, colorBuffer);
+        return (buffer, colorBuffer, lightBuffer);
     }
 
     /// <summary>
