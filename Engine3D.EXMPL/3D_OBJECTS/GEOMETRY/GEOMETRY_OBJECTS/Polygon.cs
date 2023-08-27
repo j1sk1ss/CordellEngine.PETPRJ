@@ -54,7 +54,7 @@ public class Polygon : Object {
         var t = f * e2.Dot(q);
         if (t > float.Epsilon) {
             intersectionNormal = e1.Cross(e2).Normalize();
-            return new Vector2(1); 
+            return new Vector2(t); 
         }
         
         intersectionNormal = new Vector3(0);

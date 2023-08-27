@@ -61,7 +61,7 @@ public abstract class Camera {
                 
                 foreach (var iObject in objects.Where(iObject => !lights.Contains(iObject))) {
                     var intersection = iObject.Intersection(rayOrigin, rayDirection, out var normal);
-                    if (!(intersection.X > 0) || !(intersection.X < minIt)) continue;
+                    if (intersection.X <= 0 || intersection.X >= minIt) continue;
 
                     if ((from otherObject in objects where otherObject != iObject select otherObject.Intersection(
                             rayOrigin, rayDirection, out _)).Any(shadowIntersection =>
@@ -89,6 +89,7 @@ public abstract class Camera {
 
                     minIt = intersection.X;
                     if (!(minIt < 99999)) continue;
+                    if (!iObject.GetMaterial().GetReflection()) continue;
                     
                     rayOrigin += rayDirection * (new Vector3(minIt) - new Vector3(.01));
                     rayDirection = rayDirection.Reflect(normal);
