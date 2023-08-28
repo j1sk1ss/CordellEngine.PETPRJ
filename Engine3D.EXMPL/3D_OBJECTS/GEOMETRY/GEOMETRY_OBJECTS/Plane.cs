@@ -19,9 +19,9 @@ public class Plane : Object {
         Material = material == null! ? Material.DefaultMaterial : material;
     }
     
-    public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+    public override (Vector2, Material) Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         intersectionNormal = new Vector3(0, 0, -1);
-        return new Vector2(-(rayOrigin.Dot(Position) + Size.X) / rayDirection.Dot(Position));
+        return (new Vector2(-(rayOrigin.Dot(Position) + Size.X) / rayDirection.Dot(Position)), Material);
     }
     
     public override void Rotate(Vector3 angle) { }

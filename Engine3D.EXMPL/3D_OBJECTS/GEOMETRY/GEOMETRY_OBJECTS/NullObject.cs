@@ -14,9 +14,9 @@ public class NullObject : Object{
     public NullObject(Vector3 position, Vector3 size, Material material = null!, string name = "NULL") 
         : base(position, size, material, name) { }
 
-    public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+    public override (Vector2, Material) Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         intersectionNormal = new Vector3(0);
-        return new Vector2(0);
+        return (new Vector2(0), Material);
     }
     
     public override void Rotate(Vector3 angle) { }

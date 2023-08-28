@@ -19,7 +19,7 @@ public class Sphere : Object {
         Material = material == null! ? Material.DefaultMaterial : material;
     }
 
-    public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+    public override (Vector2, Material) Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         var origin = rayOrigin - Position;
         
         var rayAngle = origin.Dot(rayDirection);
@@ -27,14 +27,14 @@ public class Sphere : Object {
         var h = rayAngle * rayAngle - c;
         if (h < .0d) {
             intersectionNormal = new Vector3(0);
-            return new Vector2(0);
+            return (new Vector2(0), Material);
         }
 
         h = Math.Sqrt(h);
         var intersection = new Vector2(-rayAngle - h, -rayAngle + h);
         intersectionNormal = origin - Position + rayDirection * new Vector3(intersection.X);
         
-        return intersection;
+        return (intersection, Material);
     }
     
     public override void Rotate(Vector3 angle) { }

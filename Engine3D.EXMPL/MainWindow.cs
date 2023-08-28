@@ -15,18 +15,10 @@ public static class MainWindow {
 
         var space = new Space(new ColorCamera(new Vector3(-4,0,0), new Vector3(0), true, 20), 
             new List<Object> {
-                new Polygon(
-                    new [] {
-                        new Vector3(0,0,0),
-                        new Vector3(0,2,0),
-                        new Vector3(0,2,2)
-                    }, new Material(ConsoleColor.Red), "p1"),
-                new Polygon(
-                    new [] {
-                        new Vector3(0,0,0),
-                        new Vector3(0,2,0),
-                        new Vector3(0,2,2)
-                    }, new Material(ConsoleColor.Green), "p2")
+                new Collection(new Vector3(0), new Vector3(0), new List<Object> {
+                    new Sphere(new Vector3(0, -2, 0), new Vector3(1), new Material(ConsoleColor.Red)),
+                    new Sphere(new Vector3(0, 2, 0), new Vector3(1), new Material(ConsoleColor.Green))
+                })
             });
 
         var t = 0;
@@ -34,7 +26,7 @@ public static class MainWindow {
             t++;
             space.GetView();
             
-            space.GetObject("p2").Move(new Vector3(-.1, 0, 0));
+            //space.GetObject("cube1").SetPosition(new Vector3(0, Math.Cos(t * .001) * 2, Math.Cos(t * .001) * 2));
             //space.GetObject("p2").Move(new Vector3(0, 0, 0));
         }
     }

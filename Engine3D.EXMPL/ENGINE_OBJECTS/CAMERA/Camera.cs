@@ -56,44 +56,53 @@ public abstract class Camera {
                 var cameraRay = new Vector3(1, uv).Rotate(Angles).Normalize();
                 var minIt = 99999d;
 
-                var rayOrigin = Coordinates;
-                var rayDirection = cameraRay;
                 
-                foreach (var iObject in objects.Where(iObject => !lights.Contains(iObject))) {
-                    var intersection = iObject.Intersection(rayOrigin, rayDirection, out var normal);
-                    if (intersection.X <= 0 || intersection.X >= minIt) continue;
-
-                    if ((from otherObject in objects where otherObject != iObject select otherObject.Intersection(
-                            rayOrigin, rayDirection, out _)).Any(shadowIntersection =>
-                            shadowIntersection.X > 0 && shadowIntersection.X < intersection.X))
-                        buffer[j, i] = ' ';
-                    else {
-                        colorBuffer[j, i] = iObject.GetMaterial().GetGColor();
+                
+                //foreach (var iObject in objects.Where(iObject => !lights.Contains(iObject))) {
+                    var rayOrigin = Coordinates;
+                    var rayDirection = cameraRay;
+                    
+                    foreach (var anotherObject in objects.Where(anotherObject => !lights.Contains(anotherObject))) {
+                        //if (iObject.Equals(anotherObject)) continue;
                         
-                        if (lights.Count > 0)
-                            foreach (var light in lights.Cast<Light>()) {
-                                lightBuffer[j, i] = (int)MathScripts.Clamp(
-                                    iObject.GetMaterial().GetGradient().IndexOf(buffer[j, i]) + (int)(normal.Dot(
-                                        light.GetPosition().Normalize()) * (ViewDistance - Math.Max(
-                                        0, ViewDistance - normal.Distance(Coordinates))) * light.GetStrength()), 0,
-                                    iObject.GetMaterial().GetGradient().Length - 2);
-                                buffer[j, i] = iObject.GetMaterial().GetGradient()[(int)lightBuffer[j, i]];
-                            }
+                        var intersection = anotherObject.Intersection(rayOrigin, rayDirection, out var normal);
+                        if (intersection.intersectionCoordinate.X <= 0 || intersection.intersectionCoordinate.X >= minIt) continue;
+
+                        if ((from otherObject in objects
+                                where otherObject != anotherObject
+                                select otherObject.Intersection(rayOrigin, rayDirection, out _)).Any(shadowIntersection =>
+                                shadowIntersection.intersectionCoordinate.X > 0 
+                                && shadowIntersection.intersectionCoordinate.X < intersection.intersectionCoordinate.X))
+                            buffer[j, i] = ' ';
                         else {
-                            buffer[j, i] = '@';
-                            lightBuffer[j, i] = -1;
+                            colorBuffer[j, i] = intersection.intersectionMaterial.GetGColor();
+
+                            if (lights.Count > 0)
+                                foreach (var light in lights.Cast<Light>())
+                                {
+                                    lightBuffer[j, i] = (int)MathScripts.Clamp(
+                                        intersection.intersectionMaterial.GetGradient().IndexOf(buffer[j, i]) + (int)(normal.Dot(
+                                            light.GetPosition().Normalize()) * (ViewDistance - Math.Max(
+                                            0, ViewDistance - normal.Distance(Coordinates))) * light.GetStrength()), 0,
+                                        intersection.intersectionMaterial.GetGradient().Length - 2);
+                                    buffer[j, i] = intersection.intersectionMaterial.GetGradient()[(int)lightBuffer[j, i]];
+                                }
+                            else {
+                                buffer[j, i] = '@';
+                                lightBuffer[j, i] = -1;
+                            }
+
+                            lightBuffer[j, i] = lightBuffer[j, i] / intersection.intersectionMaterial.GetGradient().Length - 2;
                         }
 
-                        lightBuffer[j, i] = lightBuffer[j, i] / iObject.GetMaterial().GetGradient().Length - 2;
-                    }
+                        minIt = intersection.intersectionCoordinate.X;
+                        if (!(minIt < 99999)) continue;
+                        if (!intersection.intersectionMaterial.GetReflection()) continue;
 
-                    minIt = intersection.X;
-                    if (!(minIt < 99999)) continue;
-                    if (!iObject.GetMaterial().GetReflection()) continue;
-                    
-                    rayOrigin += rayDirection * (new Vector3(minIt) - new Vector3(.01));
-                    rayDirection = rayDirection.Reflect(normal);
-                }
+                        rayOrigin += rayDirection * (new Vector3(minIt) - new Vector3(.01));
+                        rayDirection = rayDirection.Reflect(normal);
+                    }
+                //}
             });
         });
             

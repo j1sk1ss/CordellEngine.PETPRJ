@@ -22,7 +22,7 @@ public class Polygon : Object {
 
     private Vector3[] Points { get; }
     
-    public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+    public override (Vector2, Material) Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         var e1 = Points[1] - Points[0];
         var e2 = Points[2] - Points[0];
 
@@ -31,7 +31,7 @@ public class Polygon : Object {
 
         if (a is > -double.Epsilon and < double.Epsilon) {
             intersectionNormal = new Vector3(0);
-            return new Vector2(0); 
+            return (new Vector2(0), Material); 
         }
 
         var f = 1.0f / a;
@@ -40,7 +40,7 @@ public class Polygon : Object {
 
         if (u is < 0.0f or > 1.0f) {
             intersectionNormal = new Vector3(0);
-            return new Vector2(0); 
+            return (new Vector2(0), Material); 
         }
 
         var q = s.Cross(e1);
@@ -48,17 +48,17 @@ public class Polygon : Object {
 
         if (v < 0.0f || u + v > 1.0f) {
             intersectionNormal = new Vector3(0);
-            return new Vector2(0); 
+            return (new Vector2(0), Material); 
         }
 
         var t = f * e2.Dot(q);
         if (t > float.Epsilon) {
             intersectionNormal = e1.Cross(e2).Normalize();
-            return new Vector2(t); 
+            return (new Vector2(t), Material); 
         }
         
         intersectionNormal = new Vector3(0);
-        return new Vector2(0); 
+        return (new Vector2(0), Material); 
     }
     
     public override void Rotate(Vector3 angle) {

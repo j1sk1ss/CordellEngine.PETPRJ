@@ -36,7 +36,7 @@ public abstract class Object {
     /// <param name="rayDirection"> Ray direction </param>
     /// <param name="intersectionNormal"> Normal of intersection </param>
     /// <returns> Vector2 of intersection params </returns>
-    public abstract Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal);
+    public abstract (Vector2 intersectionCoordinate, Material intersectionMaterial) Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal);
 
     /// <summary>
     /// Get position of object

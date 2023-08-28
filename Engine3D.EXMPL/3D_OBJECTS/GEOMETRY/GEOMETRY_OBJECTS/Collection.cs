@@ -24,17 +24,23 @@ public class Collection : Object {
 
     private List<Object> Objects { get; }
 
-    public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
-        var vector = new Vector2(0);
-        var normal = new Vector3(0);
-
+    public override (Vector2, Material) Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+        var vector   = new Vector2(0);
+        var normal   = new Vector3(0);
+        var material = Material.DefaultMaterial;
+        
         foreach (var obj in Objects) {
-            vector += obj.Intersection(rayOrigin + Position, rayDirection, out var currentNormal);
+            var intersection = obj.Intersection(rayOrigin + Position, rayDirection, out var currentNormal);
+            if (intersection.intersectionCoordinate.X <= 0) continue;
+            
+            vector += intersection.intersectionCoordinate;
             normal += currentNormal;
+            
+            material = intersection.intersectionMaterial;
         }
         
         intersectionNormal = normal;
-        return vector;
+        return (vector, material);
     }
     
     /// <summary>

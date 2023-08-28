@@ -19,9 +19,9 @@ public class Light : Object {
     
     private double Strength { get; }
 
-    public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+    public override (Vector2, Material) Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         intersectionNormal = new Vector3(0);
-        return new Vector2(0);
+        return (new Vector2(0), Material);
     }
 
     public double GetStrength() => Strength;

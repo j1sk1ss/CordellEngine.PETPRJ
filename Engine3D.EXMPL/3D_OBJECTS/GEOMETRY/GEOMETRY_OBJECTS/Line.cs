@@ -24,13 +24,13 @@ public class Line : Object {
     
     private double Thickness { get; }
     
-    public override Vector2 Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
+    public override (Vector2, Material) Intersection(Vector3 rayOrigin, Vector3 rayDirection, out Vector3 intersectionNormal) {
         var segmentDirection = Size - Position;
         var crossRaySegment = rayDirection.Cross(segmentDirection);
         
         if (crossRaySegment.Length < double.Epsilon) {
             intersectionNormal = new Vector3(0);
-            return new Vector2(0); 
+            return (new Vector2(0), Material); 
         }
 
         var diffStartRay = rayOrigin - Position;
@@ -39,11 +39,11 @@ public class Line : Object {
 
         if (t >= 0f && t <= Thickness && u is >= 0f and <= 1f) {
             intersectionNormal = new Vector3(1); 
-            return new Vector2(1); 
+            return (new Vector2(1), Material); 
         }
 
         intersectionNormal = new Vector3(0);
-        return new Vector2(0);
+        return (new Vector2(0), Material);
     }
 
     public override void Rotate(Vector3 angle) {
