@@ -40,7 +40,8 @@ public class Collection : Object {
         }
         
         intersectionNormal = normal;
-        return (vector, material);
+        
+        return (vector, Material == Material.DefaultMaterial ? material : Material);
     }
     
     /// <summary>
